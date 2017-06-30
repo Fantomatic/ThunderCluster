@@ -1,0 +1,52 @@
+---
+- name: copy configuration file for influxdb 
+  copy: 
+    src: "configuration.j2"
+    dest: "~/relay.toml"
+
+- name: edit copy templates influxdb
+  template:
+    src: "{{ item.source }}"
+    dest: "{{ item.destination }}"
+  with_items: 
+    - { source: "influxdb-relay-service.j2", destination: "{{ kube_config_dir }}/influxdb-relay-service.yml" } 
+    - { source: "grafana-service.yaml.j2", destination: "{{ kube_config_dir }}/grafana-service.yaml.yml" }
+    - { source: "influxdb-grafana-controller.yaml.j2", destination: "{{ kube_config_dir }}/influxdb-grafana-controller.yaml.yml" }
+    - { source: "influxdb-service.yaml.j2", destination: "{{ kube_config_dir }}/influxdb-service.yaml.yml" }
+ 
+- name: launch relay 
+  kube:
+    name: "influxdb_relay_service"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/influxdb-relay-service.yml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
+
+- name: launch relay
+  kube:
+    name: "influxdb_service"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/influxdb-service.yml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
+
+- name: launch relay
+  kube:
+    name: "grafana_service"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/grafana-service.yml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
+
+- name: launch relay
+  kube:
+    name: "influxdb_grafana_controller"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/influxdb-grafana-controller.yml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
+
