@@ -29,15 +29,6 @@
     - { role: kernel-upgrade, tags: kernel-upgrade, when: kernel_upgrade is defined and kernel_upgrade }
     - { role: kubernetes/preinstall, tags: preinstall }
     - { role: docker, tags: docker }
-    - role: rkt
-      tags: rkt
-      when: "'rkt' in [etcd_deployment_type, kubelet_deployment_type, vault_deployment_type]"
-
-- hosts: etcd:k8s-cluster:vault
-  any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
-  roles:
-    - { role: kubespray-defaults, when: "cert_management == 'vault'" }
-    - { role: vault, tags: vault, vault_bootstrap: true, when: "cert_management == 'vault'" }
 
 - hosts: etcd
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"

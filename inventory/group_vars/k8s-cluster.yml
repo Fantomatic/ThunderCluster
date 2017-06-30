@@ -122,13 +122,9 @@ docker_bin_dir: "/usr/bin"
 etcd_deployment_type: docker
 kubelet_deployment_type: docker
 cert_management: script
-vault_deployment_type: docker
 
 # K8s image pull policy (imagePullPolicy)
 k8s_image_pull_policy: IfNotPresent
 
 # Monitoring apps for k8s
-efk_enabled: false
-
-# Helm deployment
-helm_enabled: false
+influxdata_enabled: true
