@@ -9,65 +9,55 @@
     src: "{{ item.source }}"
     dest: "{{ item.destination }}"
   with_items: 
-    - { source: "influxdb-grafana-rc.yaml", destination: "{{ kube_config_dir }}/influxdb-grafana-rc.yaml" }
-    - { source: "influxdb-peers-rc.yaml", destination: "{{ kube_config_dir }}/influxdb-peers-rc.yaml" }
-    - { source: "influxdb-svc.yaml", destination: "{{ kube_config_dir }}/influxdb-svc.yaml" }
-    - { source: "telegraf-rc.yaml", destination: "{{ kube_config_dir }}/telegraf-rc.yaml" }
-    - { source: "influxdb-grafana-svc.yaml", destination: "{{ kube_config_dir }}/influxdb-grafana-svc.yaml" }
-    - { source: "influxdb-raft-rc.yaml", destination: "{{ kube_config_dir }}/influxdb-raft-rc.yaml" }
-    - { source: "infra-namespace.yaml", destination: "{{ kube_config_dir }}/infra-namespace.yaml" }
+    - { source: "grafana-service.yaml", destination: "{{ kube_config_dir }}/grafana-service.yaml" }
+    - { source: "heapster-controller.yaml", destination: "{{ kube_config_dir }}/heapster-controller.yaml" }
+    - { source: "heapster-service.yaml", destination: "{{ kube_config_dir }}/heapster-service.yaml" }
+    - { source: "influxdb-grafana-controller.yaml", destination: "{{ kube_config_dir }}/influxdb-grafana-controller.yaml" }
+    - { source: "influxdb-service.yaml", destination: "{{ kube_config_dir }}/influxdb-service.yaml" }
 
 
 - name: launch relay
   kube:
-    name: "influxdb-svc"
+    name: "heapster-service"
     kubectl: "{{ bin_dir }}/kubectl"
-    filename: "{{ kube_config_dir }}/influxdb-svc.yaml"
+    filename: "{{ kube_config_dir }}/heapster-service.yaml"
     resource: "ds"
     namespace: "{{base_namespace}}"
     state: absent
 
 - name: launch relay
   kube:
-    name: "influxdb-raft-rc"
+    name: "heapster-controller"
     kubectl: "{{ bin_dir }}/kubectl"
-    filename: "{{ kube_config_dir }}/influxdb-raft-rc.yaml"
+    filename: "{{ kube_config_dir }}/heapster-controller.yaml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
+
+
+- name: launch relay
+  kube:
+    name: "influxdb-service"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/influxdb-service.yaml"
     resource: "ds"
     namespace: "{{base_namespace}}"
     state: absent
 
 - name: launch relay
   kube:
-    name: "influxdb-peers-rc"
+    name: "grafana-service"
     kubectl: "{{ bin_dir }}/kubectl"
-    filename: "{{ kube_config_dir }}/influxdb-peers-rc.yaml"
-    resource: "ds"
-    namespace: "{{base_namespace}}"
-    state: absent
-
-- name: launch relay
-  kube:
-    name: "telegraf-rc"
-    kubectl: "{{ bin_dir }}/kubectl"
-    filename: "{{ kube_config_dir }}/telegraf-rc.yaml"
-    resource: "ds"
-    namespace: "{{base_namespace}}"
-    state: absent
-
-- name: launch relay
-  kube:
-    name: "influxdb-grafana-svc"
-    kubectl: "{{ bin_dir }}/kubectl"
-    filename: "{{ kube_config_dir }}/influxdb-grafana-svc.yaml"
-    resource: "ds"
-    namespace: "{{base_namespace}}"
-    state: absent
-
-- name: launch relay
-  kube:
-    name: "influxdb-grafana-rc"
-    kubectl: "{{ bin_dir }}/kubectl"
-    filename: "{{ kube_config_dir }}/influxdb-grafana-rc.yaml"
+    filename: "{{ kube_config_dir }}/grafana-service.yaml"
     resource: "ds"
     namespace: "{{base_namespace}}"
     state: absent 
+
+- name: launch relay
+  kube:
+    name: "influxdb-grafana-controller"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/influxdb-grafana-controller.yaml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
