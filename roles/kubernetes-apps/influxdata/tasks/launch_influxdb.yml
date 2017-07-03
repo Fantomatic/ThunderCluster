@@ -1,0 +1,31 @@
+---
+- name: copy configuration file for influxdb 
+  copy: 
+    src: "configurationInfluxdb.j2"
+    dest: "/data/influxdb/config/config.toml"
+
+- name: edit copy templates influxdb
+  template:
+    src: "{{ item.source }}"
+    dest: "{{ item.destination }}"
+  with_items: 
+    - { source: "influxdb-controller.yaml", destination: "{{ kube_config_dir }}/influxdb-controller.yaml" }
+    - { source: "influxdb-service.yaml", destination: "{{ kube_config_dir }}/influxdb-service.yaml" }
+
+- name: launch influxdb service
+  kube:
+    name: "influxdb-service"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/influxdb-service.yaml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
+
+- name: launch influxdb controller
+  kube:
+    name: "influxdb-controller"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/influxdb-controller.yaml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent

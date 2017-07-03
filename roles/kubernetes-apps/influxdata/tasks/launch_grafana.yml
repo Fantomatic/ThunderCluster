@@ -1,0 +1,22 @@
+---
+- name: copy configuration file for grafana
+  copy:
+    src: "configurationGrafana.j2"
+    dest: "/data/grafana/config/custom.ini"
+
+- name: edit copy templates grafana
+  template:
+    src: "{{ item.source }}"
+    dest: "{{ item.destination }}"
+  with_items:
+    - { source: "grafana-controller.yaml", destination: "{{ kube_config_dir }}/grafana-controller.yaml" }
+    - { source: "grafana-service.yaml", destination: "{{ kube_config_dir }}/grafana-service.yaml" }
+
+- name: launch grafana service
+  kube:
+    name: "grafana-service"
+    kubectl: "{{ bin_dir }}/kubectl"
+    filename: "{{ kube_config_dir }}/grafana-service.yaml"
+    resource: "ds"
+    namespace: "{{base_namespace}}"
+    state: absent
