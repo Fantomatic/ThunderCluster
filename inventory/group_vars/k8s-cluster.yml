@@ -69,7 +69,7 @@ kube_users:
 
 # Choose network plugin (calico, weave or flannel)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
-kube_network_plugin: calico
+kube_network_plugin: canal
 
 # Enable kubernetes network policies
 enable_network_policy: false

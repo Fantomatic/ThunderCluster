@@ -1,0 +1,25 @@
+<h3>Add new {{itemType}}</h3>
+<form name="send" ng-submit="add(item)">
+	<label>Name of {{itemType}} </label> <br>
+	<input type="text" required name="name" ng-model="item[itemType]" ng-minlength=3 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+(_?[a-zA-Z0-9]+){0,5}$/">
+	<span ng-show="send.name.$error.required">Please enter a name</span>
+	<span ng-show="send.name.$error.minlength">The name must have at least 3characters</span>
+	<span ng-show="send.name.$error.maxlength">The name must not have more than 20 characters</span>
+	<span ng-show="send.name.$error.pattern">The name must begin with a letter and must be composed of letters and number only with possible undercase between them</span>
+	<br>
+	<div ng-if="valueRequired">
+	<label>Enter a value</label> <br>
+	<input type="text" required name="true" ng-model="param">
+	<button class="btn-default" type="button" ng-click="addParam(param)">+</button>
+	<button class="btn-default" type="button" ng-click="deleteParam(selectedParam)">-</button>
+	<br>
+	<br>
+	<select class="valueList" ng-model="selectedParam" size=3 ng-options="x for x in item['paramValue']"></select>
+	<br>
+	</div>
+	<br>
+	<button class="btn-default" type="submit" ng-disabled="send.$invalid">CONFIRM</button>
+</form>
+<br>
+<button class="btn-default" ng-click="back()">CANCEL</button>
+{{error}}

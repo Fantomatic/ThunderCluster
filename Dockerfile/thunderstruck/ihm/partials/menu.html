@@ -1,0 +1,9 @@
+<h3 class="title">Menu</h3>
+<div class="list-group">
+	<div><a class="list-group-item" ng-click="go('version')">VERSION<div ng-show="version">: {{version}}</div></a></div>
+	<div ng-if="version"><a class="list-group-item" ng-click="go('module')">MODULE<div ng-show="module">: {{module}}</div></a></div>
+	<div ng-if="module"><a class="list-group-item" ng-click="go('files')">FILE<div ng-show="file">: {{file}}</div></a></div>
+	<div ng-if="file"><a class="list-group-item" ng-click="go('params')">Parameter</a></div>
+</div>
+<a class="menuButton" ng-click="back()" style="position: fixed; bottom:5px; right: 5px"><img src="img/menu-button-icon.jpg" style="height: 50px; width: 50px;"></a>
+

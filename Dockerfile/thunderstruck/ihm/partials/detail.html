@@ -1,0 +1,12 @@
+<div class="title"><h3>{{item}}</h3>
+<p class="title value-show" style="word-wrap: break-word">{{value}}</p></div>
+<div class="list-group">
+	<div ng-if="itemContent">
+	<a class="list-group-item content" ng-click="go()">{{itemContent}} list</a>
+	</div>
+	<div ng-if="notVersion">
+	<a class="list-group-item delete" ng-click="suppress()">DELETE</a>
+	</div>
+	<a class="list-group-item return" ng-click="back()">Return</a>
+</div>
+{{error}}

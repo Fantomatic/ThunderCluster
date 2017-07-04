@@ -1,0 +1,3 @@
+testh: test1
+test: '[test1,test2]'
+testg: '[set,set2]'

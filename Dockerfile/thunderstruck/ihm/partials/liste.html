@@ -1,0 +1,15 @@
+<div ng-if="containerType"><h3 class="title">{{containerType}}: {{container}}</h3></div>
+<h3 class="title">List of <div ng-if="itemType!='paramName'">{{itemType}}s</div><div ng-if="itemType=='paramName'">parameters</div></h3>
+<ul style="padding-left:0 ;margin-bottom: 0">
+	<div class="list-group" style="margin-bottom:0">
+	<div ng-if="!nodata"><li ng-repeat="item in list">
+		<a class="menuItem list-group-item" ng-click="go(item)">{{item[itemType]}}</a>
+	</div>
+	<li ng-if="notVersion">
+		<a class="menuItem addItem list-group-item" ng-click="add()">ADD</a>
+	</div>
+</ul>
+<div ng-if="error">
+{{error}}
+</div>
+<a class="menuButton" ng-click="menu()" style="position: fixed; bottom:5px; right: 5px"><img src="img/menu-button-icon.jpg" style="height: 50px; width: 50px;"></a>
