@@ -1,0 +1,10 @@
+---
+- name: building container thunderstruck
+  docker_image: "name=sogeti/thunderstruck tag=1.0 path={{ role_path }}/dockerfiles/thunderstruck state=present"
+
+- name: saving in rar container thunderstruck
+  docker_image: 
+    name: sogeti/thunderstruck
+    tag: 1.0 
+    archive_path: "{{ role_path }}/files/thunderstruck.tar.gz"
+

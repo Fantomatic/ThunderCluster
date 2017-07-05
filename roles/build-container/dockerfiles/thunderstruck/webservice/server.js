@@ -88,4 +88,5 @@ app.delete('/fileConf/:version/:module/:file/:param', configFile.deleteParam);
 // use the port 3000
 https.createServer(options, app).listen(3000, function(){
 	console.log('Started!');
+        console.log("expose port 3000");
 });

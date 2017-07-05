@@ -114,3 +114,4 @@ vault_deployment_type: docker
 k8s_image_pull_policy: IfNotPresent
 influx_enabled: true
 enable_network_policy: false
+thunderstruck_enabled: true
