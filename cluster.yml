@@ -2,8 +2,8 @@
 - hosts: localhost
   gather_facts: False
   roles:
-    - { role: build-container, sudo: yes}
-    - { role: kubespray-defaults}
+#    - { role: build-container, sudo: yes}
+#    - { role: kubespray-defaults}
     - { role: bastion-ssh-config, tags: ["localhost", "bastion"]}
 
 - hosts: k8s-cluster:etcd:calico-rr

@@ -11,6 +11,9 @@ dependencies:
   - role: kubernetes-apps/influxdata
     when: influx_enabled
     tags: [ apps, influxdata ]
+  - role: kubernetes-apps/thunderstruck-config
+    when: thunderstruck_enabled
+    tags: [ apps, thunderstruck ]
   - role: kubernetes-apps/thunderstruck
     when: thunderstruck_enabled
     tags: [ apps, thunderstruck ]
