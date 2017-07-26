@@ -1,0 +1,55 @@
+---
+- name: write fichier configuration telegraf
+  template:
+    src: telegraf.conf.j2
+    dest: "{{ container_conf }}/telegraf.conf"
+  tags : telegraf
+
+- name: launch telegraf
+  docker_container: 
+     name: telegraf
+     image: telegraf:1.3.4
+     volumes: 
+       - "{{ container_conf }}/telegraf.conf:/etc/telegraf/telegraf.conf:ro"     
+  tags: telegraf
+   
+- name: write fichier de configuration influxdb
+  template:
+    src: env.influxdb.j2
+    dest: "{{ container_conf }}/env.influxdb"
+  tags: influxdb
+
+- name: launch influxdb container
+  docker_container:
+    name: influxdb
+    image: influxdb:1.3
+    exposed_ports: 
+      - "8073:8083"
+      - "8076:8086"
+    env_file: 
+      - "{{ container_conf }}/env.influxdb"
+   delegate_to: "{{groups['swarm-manager'][0]}}"
+
+- name: create directory storage grafana
+  file: 
+    path: "{{ sto_path }}/grafana"
+    state: directory
+    mode: 0755 
+  delegate_to: "{{groups['swarm-manager'][0]}}"
+
+
+- name: launch grafana persistent storage
+  docker_container: 
+     name: grafana-sto
+     image: busybox:1.27
+     volumes: "{{ sto_path }}/grafana" 
+  delegate_to: "{{groups['swarm-manager'][0]}}"
+     
+- name : launch grafana container
+  docker_container: 
+     name: grafana
+     image: grafana/grafana:4.4.1
+     volumes-from: grafana-sto
+     exposed_ports: 
+      - "2000:3000" 
+   delegate_to: "{{groups['swarm-manager'][0]}}"

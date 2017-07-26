@@ -9,7 +9,7 @@ RUN virtualenv /root/venv
 RUN /root/venv/bin/pip install pandas scipy peakutils matplotlib statsmodels pyyaml datetime cython pystan seaborn keras
 RUN /root/venv/bin/pip install fbprophet influxdb
 # Build and install lingpuarray for Theano
-RUN git clone https://github.com/Theano/libgpuarray.git  && cd ./libgpuarray && git checkout tags/v0.6.2 -b v0.6.2 && mkdir Build && cd ./Build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && make install && cd .. && /root/venv/bin/python setup.py build && /root/venv/bin/python setup.py install
+# RUN git clone https://github.com/Theano/libgpuarray.git  && cd ./libgpuarray && git checkout tags/v0.6.2 -b v0.6.2 && mkdir Build && cd ./Build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && make install && cd .. && python setup.py build && python setup.py install
 
 COPY internal-lib/ano  /root/venv/lib/python2.7/ano
 COPY internal-lib/config  /root/venv/lib/python2.7/config

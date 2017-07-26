@@ -1,0 +1,31 @@
+---
+- name: Install yum-utils if necessary.
+  yum:
+    name: yum-utils
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Add the YUM Docker repository.
+  yum_repository:
+    name: docker
+    description: Docker Repository
+    baseurl: "{{ docker_yum_repo }}"
+    gpgkey: "{{ docker_yum_gpgkey }}"
+    gpgcheck: yes
+
+- name: Install Docker dependencies.
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ docker_dependencies }}"
+
+- name: Install the Docker Engine.
+  package:
+    name: docker-engine
+    state: present
+
+- name: Enable the Docker daemon as a service and start it.
+  service:
+    name: docker
+    state: started
+enabled: yes

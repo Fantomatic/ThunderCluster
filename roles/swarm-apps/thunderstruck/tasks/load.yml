@@ -1,0 +1,51 @@
+---
+- stat: path="{{ container_conf }}/container1.tar.gz"
+  register: container1
+
+- stat: path="{{ container_conf }}/container2.tar.gz"
+  register: container2
+
+- stat: path="{{ container_conf }}/container3.tar.gz"
+  register: container3
+
+- name: deploy container1 images
+  copy:
+    src: ../../../build-container/files/container1.tar.gz
+    dest: "{{ container_conf }}/container1.tar.gz"
+  when: container1.stat.exists == True
+  tags: thunderstruck
+
+- name: chargement image container1 en local repository
+  docker_image:
+    name: container1
+    tag: v1
+    push: yes
+    load_path: "{{ container1 }}"
+
+- name: deploy container2 images
+  copy: 
+     src: ../../../build-container/files/container2.tar.gz
+     dest: "{{ container_conf }}/container2.tar.gz"
+  when: container2.stat.exists == True
+  tags: thunderstruck
+
+- name: chargement image container2 en local repository
+  docker_image:
+    name: container2
+    tag: v1
+    push: yes
+    load_path: "{{ container2 }}"
+
+- name: deploy container3 images
+  copy:
+     src: ../../../build-container/files/container3.tar.gz
+     dest: "{{ container_conf }}/container3.tar.gz"
+  when: container3.stat.exists == True
+  tags: thunderstruck
+
+- name: chargement image container3 en local repository
+  docker_image:
+    name: container3
+    tag: v1
+    push: yes
+    load_path: "{{ container3 }}"
