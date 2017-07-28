@@ -28,14 +28,14 @@
       - "8076:8086"
     env_file: 
       - "{{ container_conf }}/env.influxdb"
-   delegate_to: "{{groups['swarm-manager'][0]}}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"
 
 - name: create directory storage grafana
   file: 
     path: "{{ sto_path }}/grafana"
     state: directory
     mode: 0755 
-  delegate_to: "{{groups['swarm-manager'][0]}}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"
 
 
 - name: launch grafana persistent storage
@@ -43,7 +43,7 @@
      name: grafana-sto
      image: busybox:1.27
      volumes: "{{ sto_path }}/grafana" 
-  delegate_to: "{{groups['swarm-manager'][0]}}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"
      
 - name : launch grafana container
   docker_container: 
@@ -52,4 +52,4 @@
      volumes-from: grafana-sto
      exposed_ports: 
       - "2000:3000" 
-   delegate_to: "{{groups['swarm-manager'][0]}}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"

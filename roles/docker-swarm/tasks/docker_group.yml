@@ -1,0 +1,15 @@
+---
+
+- name: Add the Docker administrators to the Docker group
+  user:
+    name: "{{ item }}"
+    groups: "{{ docker_group }}"
+    append: true
+  register: addtogroup
+  become: true
+  with_items: "{{ docker_admin_users }}"
+
+
+- user: name={{ansible_user}} groups=input
+- name: Reset ssh connection to allow user changes to affect 'current login user'
+  meta: reset_connection

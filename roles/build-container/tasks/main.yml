@@ -26,7 +26,7 @@
     tag: 1.0
     archive_path: "{{ role_path }}/files/container1.tar.gz"
 
-name: building container container2
+- name: building container container2
   docker_image: "name=sogeti/container1 tag=1.0 path={{ role_path }}/dockerfiles/container2 state=present"
 
 - name: saving in rar container container2
@@ -35,7 +35,7 @@ name: building container container2
     tag: 1.0
     archive_path: "{{ role_path }}/files/container2.tar.gz"
 
-name: building container container3
+- name: building container container3
   docker_image: "name=sogeti/container3 tag=1.0 path={{ role_path }}/dockerfiles/container3 state=present"
 
 - name: saving in rar container container3

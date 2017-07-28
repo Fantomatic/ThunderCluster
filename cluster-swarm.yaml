@@ -1,4 +1,10 @@
 ---
+- hosts: all
+  any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
+  roles: 
+    - { role: docker-swarm, tags: docker}
+    - { role: swarm, tags: swarm }
+
 - hosts: localhost
   gather_facts: False
   roles:
@@ -6,14 +12,11 @@
    - { role: bastion-ssh-config } 
 
 - hosts: all
-  any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   roles: 
-    - { role: docker, tags: docker}
-    - { role: monitoring, tags: monitoring }
-    - { role: swarm, tags: swarm }
+   - { role: monitoring-swarm, tags: monitoring }
 
 - hosts: master1
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   roles:
-    - { role: swarm-apps/thunderstruck, tags: thunderstruck }}
+    - { role: swarm-apps/thunderstruck, tags: thunderstruck }
     - { role: swarm-apps/thunderstruck-config, tags: thunderstruck }

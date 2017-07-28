@@ -4,7 +4,7 @@
   roles:
 #    - { role: build-container, sudo: yes}
 #    - { role: kubespray-defaults}
-    - { role: bastion-ssh-config, tags: ["localhost", "bastion"]}
+#    - { role: bastion-ssh-config, tags: ["localhost", "bastion"]}
 
 - hosts: k8s-cluster:etcd:calico-rr
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"

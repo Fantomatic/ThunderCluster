@@ -1,4 +1,3 @@
-# Docker repo branch
 docker_repo: main
 
 # Extra packages that have to be installed together with Docker
@@ -25,3 +24,4 @@ skip_swarm: False  # if true, skip the swarm setup
 skip_docker_py: False # if true, skip the docker-py
 container_config: "/root/"
 sto_path: "/data"
+
