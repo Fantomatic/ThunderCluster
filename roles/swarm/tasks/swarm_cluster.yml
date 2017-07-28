@@ -36,7 +36,7 @@
   shell: docker swarm join-token -q worker
   changed_when: False
   register: docker_worker_token
-  delegate_to: "{{ groups['swarm_manager'][0] }}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"
   delegate_facts: True
   when: "'swarm-worker' in group_names"
   tags:
@@ -46,7 +46,7 @@
   shell: docker swarm join-token -q manager
   changed_when: False
   register: docker_manager_token
-  delegate_to: "{{ groups['swarm_manager'][0] }}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"
   delegate_facts: True
   when: "'swarm-manager' in  group_names 
     and inventory_hostname != groups['swarm-manager'][0]"

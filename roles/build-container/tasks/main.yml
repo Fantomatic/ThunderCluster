@@ -1,6 +1,6 @@
 ---
 - name: building container thunderstruck-config
-  docker_image: "name=sogeti/thunderstruck tag=1.0 path={{ role_path }}/dockerfiles/thunderstruck-config state=present"
+  docker_image: "name=sogeti/thunderstruck-config tag=1.0 path={{ role_path }}/dockerfiles/thunderstruck-config state=present"
 
 - name: saving in rar container thunderstruck-config
   docker_image: 
