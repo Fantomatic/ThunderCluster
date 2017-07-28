@@ -28,7 +28,7 @@
   shell: docker swarm init
         --listen-addr {{ docker_swarm_addr }}:{{ docker_swarm_port }}
         --advertise-addr {{ docker_swarm_addr }}
-  when: "inventory_hostname == groups['swarm_manager'][0]"
+  when: "inventory_hostname == groups['swarm-manager'][0]"
   tags:
     - skip_ansible_lint # Suppressing the linter
 
@@ -38,7 +38,7 @@
   register: docker_worker_token
   delegate_to: "{{ groups['swarm_manager'][0] }}"
   delegate_facts: True
-  when: "'docker_swarm_worker' in group_names"
+  when: "'swarm-worker' in group_names"
   tags:
     - skip_ansible_lint # Suppressing the linter
 
@@ -48,20 +48,20 @@
   register: docker_manager_token
   delegate_to: "{{ groups['swarm_manager'][0] }}"
   delegate_facts: True
-  when: "'swarm_manager' in {{ group_names }}
-    and {{inventory_hostname}} != {{groups['swarm_manager'][0]}}"
+  when: "'swarm-manager' in  group_names 
+    and inventory_hostname != groups['swarm-manager'][0]"
   tags:
     - skip_ansible_lint # Suppressing the linter
 
 - name: Declare the address of the first Swarm manager as a fact.
   set_fact:
     docker_manager_address: "{{ docker_swarm_addr }}:{{ docker_swarm_port }}"
-  when: "inventory_hostname == groups['swarm_manager'][0]"
+  when: "inventory_hostname == groups['swarm-manager'][0]"
 
 - name: Distribute the fact containing address of the first Swarm manager.
   set_fact:
-    docker_manager_address: "{{hostvars[groups['swarm_manager'][0]]['docker_manager_address'] }}"
-  when: "inventory_hostname != groups['swarm_manager'][0]"
+    docker_manager_address: "{{hostvars[groups['swarm-manager'][0]]['docker_manager_address'] }}"
+  when: "inventory_hostname != groups['swarm-manager'][0]"
 
 - name: Join the pending Swarm worker nodes.
   shell: docker swarm join
@@ -72,7 +72,7 @@
   changed_when: False
   when: "docker_info.stdout.find('Swarm: active') == -1
     and docker_info.stdout.find('Swarm: pending') == -1
-    and 'docker_swarm_worker' in group_names"
+    and 'swarm-worker' in group_names"
   tags:
     - skip_ansible_lint # Suppressing the linter
 
@@ -85,8 +85,8 @@
   changed_when: False
   when: "docker_info.stdout.find('Swarm: active') == -1
     and docker_info.stdout.find('Swarm: pending') == -1
-    and 'swarm_manager' in group_names
-    and inventory_hostname != groups['swarm_manager'][0]"
+    and 'swarm-manager' in group_names
+    and inventory_hostname != groups['swarm-manager'][0]"
   tags:
     - skip_ansible_lint # Suppressing the linter
 
@@ -97,7 +97,7 @@
          {{ ansible_hostname }}
   register: docker_swarm_labels
   changed_when: False
-  delegate_to: "{{ groups['swarm_manager'][0]}}"
+  delegate_to: "{{ groups['swarm-manager'][0]}}"
   delegate_facts: True
   tags:
     - skip_ansible_lint
@@ -108,7 +108,7 @@
   with_items: "{{ docker_swarm_labels.stdout_lines }}"
   when: "{{ docker_swarm_labels.stdout_lines | count > 0 }}"
   changed_when: False
-  delegate_to: "{{ groups['swarm_manager'][0] }}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"
   delegate_facts: True
   tags:
     - skip_ansible_lint
@@ -119,7 +119,7 @@
   changed_when: False
   with_items:
     - "{{ swarm_labels  | default([]) }}"
-  delegate_to: "{{ groups['swarm_manager'][0] }}"
+  delegate_to: "{{ groups['swarm-manager'][0] }}"
   delegate_facts: True
   tags:
     - skip_ansible_lint
