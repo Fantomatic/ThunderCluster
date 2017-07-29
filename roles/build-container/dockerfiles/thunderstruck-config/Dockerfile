@@ -6,14 +6,14 @@ RUN yum install -y epel-release
 RUN yum install -y nodejs httpd
 RUN  npm install -g bower
 COPY ihm /var/www/ihm/
-COPY webservice /root/webservice/
+COPY API /root/API/
 
 WORKDIR /var/www/ihm/
 RUN echo '{ "allow_root": true }' > /root/.bowerrc
 RUN bower install
 
-WORKDIR /root/webservice/
+WORKDIR /root/API/
 RUN npm install 
 
 EXPOSE 3000
-CMD ["node", "/root/webservice/server.js"]
+CMD ["node", "/root/API/server.js"]

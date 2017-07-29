@@ -15,12 +15,29 @@
 
 	<div class="row" style="margin: 0">
 		<img src="img/sogeti.jpeg" style="height: 50px; width: 50px; float: left">
-		<h4 style="margin: 0px; float: left">ThunderStruck Config</h4>
+		<h4 style="margin: 0px; float: left">ThunderStruck Confi<a id="hidJL" data-toggle="modal" data-target="#easterEgg">g</a></h4>
 	</div>
 	<div class="row" style="margin: 0">
 	<div ng-view></div>
 	</div>
-
+	<div id="easterEgg" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+        	                <div class="modal-header">
+        	                        <h4 class="modal-title">Our lord and saviour</h4>
+        	                </div>
+        	                <div class="modal-body">
+        	                        <img class="img-help" src="img/myLord.png">
+        	                </div>
+        	                <div class="modal-footer">
+        	                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	                </div>
+        	        </div>
+        	</div>
+	</div>
+	
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="css/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 	<script src="bower_components/angular/angular.js"></script>
 	<script src="bower_components/angular-route/angular-route.js"></script>
 	<script src="js/app.js"></script>

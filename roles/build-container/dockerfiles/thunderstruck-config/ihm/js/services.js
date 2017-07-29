@@ -4,7 +4,7 @@
 
 var app = angular.module('myApp.services', []);
 
-app.constant("URL", "https://localhost:3000/fileConf/");
+app.constant("URL", "https://ec2-54-77-32-101.eu-west-1.compute.amazonaws.com:3000/fileConf/");
 
 app.factory("versionListFactory", function($http, URL){
 	return{

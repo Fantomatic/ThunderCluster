@@ -27,6 +27,7 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	$scope.container = actPoint.getVersion();
 	$scope.itemType = "module";
 	$scope.notVersion = true;
+	$scope.version = actPoint.getVersion();
 	moduleListFactory.getModuleList(actPoint.getVersion(), function(data){
 		if(data['state']){
 			$scope.error = data['reason'];
@@ -53,6 +54,8 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	$scope.container = actPoint.getModule(); 
 	$scope.itemType = "file";
 	$scope.notVersion = true;
+	$scope.version = actPoint.getVersion();
+	$scope.module = actPoint.getModule();
 	fileListFactory.getFileList(actPoint.getVersion(), actPoint.getModule(), function(data){
 		if(data['state']){
 			$scope.error = data['reason'];
@@ -79,6 +82,9 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	$scope.container = actPoint.getFile();
 	$scope.itemType = "paramName";
 	$scope.notVersion = true;
+	$scope.version = actPoint.getVersion();
+	$scope.module = actPoint.getModule();
+	$scope.file = actPoint.getFile();
 	paramListFactory.getParamList(actPoint.getVersion(), actPoint.getModule(), actPoint.getFile(), function(data){
 		if(data['state']){
 			$scope.error = data['reason'];
@@ -103,6 +109,7 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 		$location.path('/version').replace();
 	}
 	$scope.itemType = "module";
+	$scope.version = actPoint.getVersion();
 	$scope.add = function(){
 		moduleListFactory.addModule($scope.item, actPoint.getVersion(), function(data){
 			if(data['state']){
@@ -121,6 +128,8 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 		$location.path('/module').replace();
 	}
 	$scope.itemType = "file";
+	$scope.version = actPoint.getVersion();
+	$scope.version = actPoint.getModule();
 	$scope.add = function(){
 		fileListFactory.addFile($scope.item, actPoint.getVersion(), actPoint.getModule(), function(data){
 			if(data['state']){
@@ -140,9 +149,65 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	}
 	$scope.valueRequired = true;
 	$scope.itemType = "paramName";
+	$scope.locked = false;
 	$scope.item = {};
 	$scope.item['paramValue'] = [];
+	$scope.fieldList = [];
+	var valueList = {};
+	$scope.valueList = {};
+	$scope.fieldValueList = [];
+	$scope.param = null;
+	var isValue = false;
+	$scope.version = actPoint.getVersion();
+	$scope.module = actPoint.getModule();
+	$scope.file = actPoint.getFile();
+	$scope.help = null;
+	$scope.showHelp = function(){
+		if($scope.help == null){
+			$scope.help = "First Field is for the name of the parameter\n\n"
+			+ "Then use the selector to choose between value, table or list based on what type of parameter you want\n\n"
+			+ "Value is simple, just enter the value you want in the field and click on confirm\n\n"
+			+ "For table you enter a value in the field and click on + to add it. You can add as many as you want. If you entered a incorrect value you can select it in the select box and click - to delete it. When you added all the value in the table you need, click on confirm\n\n"
+			+ "In list you must do a second selection base on what couple you need in your list : value for a couple \"field:value\" ex: debug:true or table for a couple \"field:table\".\n\n"
+			+ "If you choosed value, enter the field in the first field and the value in the second field, like for the table selection you can add and delete entered value with the + and - button\n\n"
+			+ "If you choosed table, You must first add a field in the first field, add it with the + button, and select it in the select box to then add the different value with the second field and the second + button. Like before select a field or value in the select box and use the - button to delete it\n\n"
+			+ "If you want a parameter with a list composed of value and table, you can use the selection list\/value and enter couple \"field:value\" and \"field:[value,value]\" to make it";
+		}else{
+			$scope.help = null;
+		}
+	}
+	$scope.updateValueType = function(selectedType){
+		if(selectedType=="value"){
+			$scope.item['paramValue'] = null;
+			isValue = true;
+		} else if (selectedType=="table"){
+			isValue = false;
+			$scope.item['paramValue'] = [];
+		} else if (selectedType=="listing"){
+			isValue = false;
+			$scope.item['paramValue'] = {};
+		}
+	};
+	$scope.setValue = function(value){
+		if(isValue){
+			if(/^\d+$/.test(value)){
+				value = parseInt(value);
+			}else if(/^[tT]rue$/.test(value)){
+				value = true;
+			}else if(/^[fF]alse$/.test(value)){
+				value = false;
+			}else if(/^\d+\.\d+$/.test(value)||/^\d+(\.\d+)?[eE]\-?\d+$/.test(value)){
+				value = parseFloat(value);
+			}
+			$scope.item['paramValue'] = value;
+		}
+	}
 	$scope.addParam = function(param){
+		if(/^\d+$/.test(param)){
+			param = parseInt(param);
+		}else if(/^\d+\.\d+$/.test(param)||/^\d+(\.\d+)?[eE]\-?\d+$/.test(param)){
+			param = parseFloat(param);
+		}
 		$scope.item['paramValue'][$scope.item['paramValue'].length] = param;
 	};
 	$scope.deleteParam = function(selectedParam){
@@ -154,14 +219,77 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 			i ++;
 		}
 	};
-	$scope.add = function(){
-		paramListFactory.addParam($scope.item, actPoint.getVersion(), actPoint.getModule(), actPoint.getFile(), function(data){
-			if(data['state']){
-				$scope.error = data['reason'];
-			} else {
-				$location.path('/params').replace();
+	$scope.addField = function(field){
+		$scope.item['paramValue'][field] = [];
+		valueList[field] = [];
+		$scope.fieldList[$scope.fieldList.length] = field;
+	};
+	$scope.deleteField = function(selectedField){
+		var i = 0;
+		while(i < $scope.fieldList.length){
+			if($scope.fieldList[i] == selectedField){
+				$scope.fieldList.splice(i, 1);
 			}
-		});
+			i ++;
+		}
+		delete valueList[field];
+		delete $scope.item['paramValue'][selectedField];
+	};
+	$scope.onFieldChange = function(selectedField){
+		$scope.valueList = valueList[selectedField];
+	};
+	$scope.addValue = function(selectedField, value){
+		if(/^\d+$/.test(value)){
+			value = parseInt(value);
+		}else if(/^\d+\.\d+$/.test(value)||/^\d+(\.\d+)?[eE]\-?\d+$/.test(value)){
+			value = parseFloat(value);
+		}
+		valueList[selectedField][valueList[selectedField].length] = value;
+		$scope.item['paramValue'][selectedField][$scope.item['paramValue'][selectedField].length] = value;
+	};
+	$scope.deleteValue = function(selectedField, selectedValue){
+		var i = 0;
+		while(i < $scope.item['paramValue'][selectedField].length){
+			if($scope.item['paramValue'][selectedField][i] == selectedValue){
+				$scope.item['paramValue'][selectedField].splice(i, 1);
+			}
+			i ++;
+		}
+		var j = 0;
+		while(j < valueList[selectedField].length){
+			if(valueList[selectedField][j] == selectedValue){
+				valueList[selectedField].splice(j, 1);
+			}
+			j ++;
+		}
+	};
+	$scope.addFieldValue = function(field, value){
+		if(/^\d+$/.test(value)){
+			value = parseInt(value);
+		}else if(/^[tT]rue$/.test(value)){
+			value = true;
+		}else if(/^[fF]alse$/.test(value)){
+			value = false;
+		}else if(/^\d+\.\d+$/.test(value)||/^\d+(\.\d+)?[eE]\-?\d+$/.test(value)){
+			value = parseFloat(value);
+		}
+		$scope.item['paramValue'][field] = value;
+	};
+	$scope.deleteFieldValue = function(selectedValue){
+		delete $scope.item['paramValue'][selectedValue];
+	};
+	$scope.add = function(param){
+		if($scope.item['paramValue'] != null && $scope.item['paramValue'] != undefined && $scope.item['paramValue'].length != 0 &&!angular.equals($scope.item['paramValue'], {})){
+			paramListFactory.addParam($scope.item, actPoint.getVersion(), actPoint.getModule(), actPoint.getFile(), function(data){
+				if(data['state']){
+					$scope.error = data['reason'];
+				} else {
+					$location.path('/params').replace();
+				}
+			});
+		} else {
+			$scope.error = "Enter a Value";
+		}
 	};
 	$scope.back = function(){
 		$location.path('/params').replace();
@@ -174,6 +302,7 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	$scope.itemType = 'version';
 	$scope.itemContent = 'Modules';
 	$scope.item = actPoint.getVersion();
+	$scope.version = actPoint.getVersion();
 	$scope.go = function(){
 		$location.path('/module').replace();
 	};
@@ -190,6 +319,8 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	$scope.itemType =  "module";
 	$scope.itemContent = 'Files';
 	$scope.item = actPoint.getModule();
+	$scope.version = actPoint.getVersion();
+	$scope.module = actPoint.getModule();
 	$scope.go = function(){
 		$location.path('/files').replace();
 	};
@@ -215,6 +346,9 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	$scope.itemType =  "files";
 	$scope.itemContent = 'params';
 	$scope.item = actPoint.getFile();
+	$scope.version = actPoint.getVersion();
+	$scope.module = actPoint.getModule();
+	$scope.file = actPoint.getFile();
 	$scope.go = function(){
 		$location.path('/params').replace();
 	};
@@ -240,6 +374,9 @@ angular.module('myApp.controllers', ['ngRoute', 'myApp.services'])
 	$scope.itemType = "param";
 	$scope.item = actPoint.getParamName();
 	$scope.value = actPoint.getParamValue();
+	$scope.version = actPoint.getVersion();
+	$scope.module = actPoint.getModule();
+	$scope.file = actPoint.getFile();
 	$scope.suppress = function(){
 		paramListFactory.deleteParam(actPoint.getVersion(), actPoint.getModule(), actPoint.getFile(), actPoint.getParamName(), function(data){
 			if(data['state']){

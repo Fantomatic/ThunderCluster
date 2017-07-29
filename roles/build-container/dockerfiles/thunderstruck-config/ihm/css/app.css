@@ -13,8 +13,15 @@ body{
 }
 
 .valueList{
-	min-width: 50%;
-	max-width: 100%
+	width: 100%;
+}
+
+.fieldList{
+	width: 45%;
+}
+
+.fieldParamList{
+	width: 45%;
 }
 
 .title,.list-group-item{
@@ -28,6 +35,7 @@ body{
 
 .list-group-item{
 	background-image: linear-gradient(45deg, #e6e6e6, #cccccc);
+	margin-top: 1px;
 }
 
 li:nth-of-type(odd) > .list-group-item{
@@ -55,5 +63,53 @@ li > .list-group-item.addItem{
         color: #000000;
 }
 
+#namingField.ng-invalid.ng-dirty{
+	background-color: grey;
+}
+
+.img-help{
+	width: 100%;
+}
+
+#hidJL{
+	color: #000000;!important
+	text-decoration: none;
+	opacity: 100%;
+}
+
+select.minimal {
+
+  /* styling */
+  background-color: white;
+  border: thin solid blue;
+  border-radius: 4px;
+  display: inline-block;
+  font: inherit;
+  line-height: 1.5em;
+  padding: 0.5em 3.5em 0.5em 1em;
+
+  /* reset */
+
+  margin: 0;      
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+}
 
 

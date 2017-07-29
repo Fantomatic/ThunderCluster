@@ -1,25 +1,104 @@
-<h3>Add new {{itemType}}</h3>
-<form name="send" ng-submit="add(item)">
+<h3>Add new <span ng-if="itemType!='paramName'">{{itemType}}</span><span ng-if="itemType=='paramName'">parameter</span></h3>
+<form name="send" ng-submit="add(param)">
 	<label>Name of {{itemType}} </label> <br>
-	<input type="text" required name="name" ng-model="item[itemType]" ng-minlength=3 ng-maxlength=20 ng-pattern="/^[a-zA-Z]+(_?[a-zA-Z0-9]+){0,5}$/">
+	<input id="namingField" type="text" required name="name" ng-model="item[itemType]" ng-minlength=2 ng-maxlength=32 ng-pattern="/^[a-zA-Z]+(_?[a-zA-Z0-9]+){0,5}$/">
 	<span ng-show="send.name.$error.required">Please enter a name</span>
-	<span ng-show="send.name.$error.minlength">The name must have at least 3characters</span>
-	<span ng-show="send.name.$error.maxlength">The name must not have more than 20 characters</span>
+	<span ng-show="send.name.$error.minlength">The name must have at least 2 characters</span>
+	<span ng-show="send.name.$error.maxlength">The name must not have more than 32 characters</span>
 	<span ng-show="send.name.$error.pattern">The name must begin with a letter and must be composed of letters and number only with possible undercase between them</span>
-	<br>
+	<br><br>
 	<div ng-if="valueRequired">
-	<label>Enter a value</label> <br>
-	<input type="text" required name="true" ng-model="param">
-	<button class="btn-default" type="button" ng-click="addParam(param)">+</button>
-	<button class="btn-default" type="button" ng-click="deleteParam(selectedParam)">-</button>
-	<br>
-	<br>
-	<select class="valueList" ng-model="selectedParam" size=3 ng-options="x for x in item['paramValue']"></select>
-	<br>
+		<label>Select type of value</label><br>
+		<select class="minimal" ng-model="selectedType" ng-change="updateValueType(selectedType)">
+			<option value="value">Value</option>
+			<option value="table">List</option>
+			<option value="listing">List with custom index</option>
+		</select><br>
+		<span ng-if="selectedType=='value' || selectedType=='table'">
+			<br>
+			<label>Enter a value</label> 
+			<span ng-if="selectedType=='value'">
+				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exValue">Ex?</button>
+			</span>
+			<span ng-if="selectedType=='table'">
+				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exList">Ex?</button>
+			</span>
+			<br>
+			<input type="text" required name="param" ng-model="param" ng-change="setValue(param)">
+			<span ng-if="selectedType=='table'">
+				<button class="btn-default" type="button" ng-click="addParam(param)">+</button>
+				<button class="btn-default" type="button" ng-click="deleteParam(selectedParam)">-</button>
+				<br>
+				<br>
+				<select class="valueList" ng-model="selectedParam" size=3 ng-options="x for x in item['paramValue']"></select>
+			</span>
+		</span>
+		<span ng-if="selectedType=='listing'">
+			<br>
+			<label>Value <input type="radio" ng-model="selectedModel" value="value"></label><label>List <input type="radio" ng-model="selectedModel" value="table"></label><br>
+			<span ng-if="selectedModel" ng-init="selection={}">
+				<label>Enter a field</label><br>
+				<input type="text" required name="field" ng-model="field">
+				<span ng-if="selectedModel=='table'">
+					<button class="btn-default" type="button" ng-click="addField(field)">+</button>
+					<button class="btn-default" type="button" ng-click="deleteField(selection.selectedField)">-</button>
+				</span>
+				<br>
+				<label>Enter a value</label><br>
+				<input type="text" required name="value" ng-model="value">
+				<span ng-if="selectedModel=='table'">
+					<button class="btn-default" type="button" ng-click="addValue(selection.selectedField, value)">+</button>
+					<button class="btn-default" type="button" ng-click="deleteValue(selection.selectedField, selection.selectedParam)">-</button>
+				</span>
+				<span ng-if="selectedModel=='value'">
+					<button class="btn-default" type="button" ng-click="addFieldValue(field, value)">+</button>
+					<button class="btn-default" type="button" ng-click="deleteFieldValue(selection.selectedValue)">-</button>
+				</span>
+				<span ng-if="selectedModel=='table'"><br>
+					<select class="fieldList" ng-model="selection.selectedField" size=3 ng-options="x for x in fieldList" ng-change="onFieldChange(selection.selectedField)"></select>
+					<select class="fieldParamList" ng-model="selection.selectedParam" size=3 ng-options="x for x in valueList"></select>
+				</span>
+				<span ng-if="selectedModel=='value'">
+					<select class="valueList" ng-model="selection.selectedValue" size=3 ng-options="key as key + ' : ' + value for (key, value) in item['paramValue']"></select>
+				</span>
+			</span>
+		</span>
 	</div>
 	<br>
-	<button class="btn-default" type="submit" ng-disabled="send.$invalid">CONFIRM</button>
+	<button class="btn btn-success" type="submit" ng-disabled="send.$invalid">CONFIRM</button>
 </form>
 <br>
-<button class="btn-default" ng-click="back()">CANCEL</button>
+<button class="btn btn-danger" ng-click="back()">CANCEL</button>
+<!-- Modal example type value -->
+<div id="exValue" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Parameter as a value in yaml file</h4>
+			</div>
+			<div class="modal-body">
+				<img class="img-help" src="img/exYamlValue.png">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="exList" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Parameter as a list in yaml file</h4>
+			</div>
+			<div class="modal-body">
+				<img class="img-help" src="img/exYamlList.png">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 {{error}}
+<footer style="margin-top: 50px"><p>Version: {{version}} >> Module: {{module}} >> File: {{file}}</p></footer>
