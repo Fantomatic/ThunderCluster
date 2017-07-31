@@ -6,7 +6,8 @@
   include_role: 
     name: build-container
   vars: 
-    thunderstruck: true   
+    thunderstruck_build: true   
+    thunderstruckconfig_build: false
 
 - include: load.yml
  

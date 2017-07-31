@@ -2,6 +2,6 @@
 - include: thunderstruckconfig.yml      
   when: thunderstruckconfig_build
 
-- include: thunderstuck
+- include: thunderstruck.yml
   when: thunderstruck_build
 

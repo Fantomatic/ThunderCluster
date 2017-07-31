@@ -1,18 +1,18 @@
 ---
 - stat: path="{{ container_conf }}/thunderstruck-config.tar.gz"
-  register: thunderstruck-config
+  register: thunderstruckconfig
 
 - name: deploy thunderstruck config images
   copy: 
      src: ../../../build-container/files/thunderstruck-config.tar.gz
      dest: "{{ container_conf }}/thunderstruck-conf.tar.gz"
-  when: thunderstruck-config.stat.exists == True
+  when: thunderstruckconfig.stat.exists == False
   tags: thunderstruck
 
 - name: chargement image thunderstruck en local repository
   docker_image:
     name: thunderstruck-config
-    tag: v1
+    tag: 1.0
     push: yes
-    load_path: "{{ thunderstruck-config }}"
+    load_path: "{{ container_conf }}/thunderstruck-conf.tar.gz"
 

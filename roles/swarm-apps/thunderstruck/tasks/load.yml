@@ -12,7 +12,7 @@
   copy:
     src: ../../../build-container/files/container1.tar.gz
     dest: "{{ container_conf }}/container1.tar.gz"
-  when: container1.stat.exists == True
+  when: container1.stat.exists == False
   tags: thunderstruck
 
 - name: chargement image container1 en local repository
@@ -20,13 +20,13 @@
     name: container1
     tag: v1
     push: yes
-    load_path: "{{ container1 }}"
+    load_path: "{{ container_conf }}/container1.tar.gz" 
 
 - name: deploy container2 images
   copy: 
      src: ../../../build-container/files/container2.tar.gz
      dest: "{{ container_conf }}/container2.tar.gz"
-  when: container2.stat.exists == True
+  when: container2.stat.exists == False
   tags: thunderstruck
 
 - name: chargement image container2 en local repository
@@ -34,13 +34,13 @@
     name: container2
     tag: v1
     push: yes
-    load_path: "{{ container2 }}"
+    load_path: "{{ container_conf }}/container2.tar.gz"
 
 - name: deploy container3 images
   copy:
      src: ../../../build-container/files/container3.tar.gz
      dest: "{{ container_conf }}/container3.tar.gz"
-  when: container3.stat.exists == True
+  when: container3.stat.exists == False
   tags: thunderstruck
 
 - name: chargement image container3 en local repository
@@ -48,4 +48,4 @@
     name: container3
     tag: v1
     push: yes
-    load_path: "{{ container3 }}"
+    load_path: "{{ container_conf }}/container3.tar.gz"

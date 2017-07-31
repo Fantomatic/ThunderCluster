@@ -26,8 +26,6 @@
     exposed_ports: 
       - "8073:8083"
       - "8076:8086"
-    env_file: 
-      - "{{ container_conf }}/env.influxdb"
   delegate_to: "{{ groups['swarm-manager'][0] }}"
 
 - name: create directory storage grafana
@@ -49,7 +47,7 @@
   docker_container: 
      name: grafana
      image: grafana/grafana:4.4.1
-     volumes-from: grafana-sto
+     volumes_from: grafana-sto
      exposed_ports: 
       - "2000:3000" 
-  delegate_to: "{{ groups['swarm-manager'][0] }}"
+  delegate_to: node1
