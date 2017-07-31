@@ -8,7 +8,7 @@
 - hosts: localhost
   gather_facts: False
   roles:
-   - { role: build-container, sudo: yes}
+   - { role: build-container, sudo: yes, thunderstruckconfig_build: true}
    - { role: bastion-ssh-config } 
 
 - hosts: all

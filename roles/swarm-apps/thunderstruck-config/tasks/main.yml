@@ -2,3 +2,5 @@
 - include: load.yml
 
 - include: launch.yml
+  delegate_to: "{{groups['swarm-manager'][0]}}"
+

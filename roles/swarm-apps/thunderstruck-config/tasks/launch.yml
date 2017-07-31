@@ -1,20 +1,4 @@
 ---
-- name: chargement image base_container en local repository
-  docker_image:
-    name: thunderstruck
-    tag: v1
-    push: yes
-    load_path: "{{ base_container }}"
+- name: launch thunderstruck-config image in swarm
+  command: docker service create --mode=global --network=container:influxdb sogeti/thunderstruck-config:1.0
 
-- name: chargement image thunderstruck en local repository
-  docker_image:
-    name: thunderstruck-config
-    tag: v1
-    push: yes
-    load_path: "{{ thunderstruck-config }}"
-
-- name: launch thunderstruck images1 in swarm 
-  command: docker run 
-
-- name: launch thunderstruck images2 in swarm
-  command: docker 

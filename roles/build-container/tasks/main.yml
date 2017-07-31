@@ -1,45 +1,7 @@
 ---
-- name: building container thunderstruck-config
-  docker_image: "name=sogeti/thunderstruck-config tag=1.0 path={{ role_path }}/dockerfiles/thunderstruck-config state=present"
+- include: thunderstruckconfig.yml      
+  when: thunderstruckconfig_build
 
-- name: saving in rar container thunderstruck-config
-  docker_image: 
-    name: sogeti/thunderstruck-config
-    tag: 1.0 
-    archive_path: "{{ role_path }}/files/thunderstruck-config.tar.gz"
+- include: thunderstuck
+  when: thunderstruck_build
 
-- name: building container base_container
-  docker_image: "name=sogeti/base_container tag=1.0 path={{ role_path }}/dockerfiles/base_container state=present"
-
-- name: saving in rar container base_container
-  docker_image:
-    name: sogeti/base_container
-    tag: 1.0
-    archive_path: "{{ role_path }}/files/base_container.tar.gz"
-
-- name: building container container1
-  docker_image: "name=sogeti/container1 tag=1.0 path={{ role_path }}/dockerfiles/container1 state=present"
-
-- name: saving in rar container container1
-  docker_image:
-    name: sogeti/container1
-    tag: 1.0
-    archive_path: "{{ role_path }}/files/container1.tar.gz"
-
-- name: building container container2
-  docker_image: "name=sogeti/container1 tag=1.0 path={{ role_path }}/dockerfiles/container2 state=present"
-
-- name: saving in rar container container2
-  docker_image:
-    name: sogeti/container2
-    tag: 1.0
-    archive_path: "{{ role_path }}/files/container2.tar.gz"
-
-- name: building container container3
-  docker_image: "name=sogeti/container3 tag=1.0 path={{ role_path }}/dockerfiles/container3 state=present"
-
-- name: saving in rar container container3
-  docker_image:
-    name: sogeti/container3
-    tag: 1.0
-    archive_path: "{{ role_path }}/files/container3.tar.gz"
