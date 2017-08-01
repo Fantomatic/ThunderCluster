@@ -26,14 +26,14 @@
     exposed_ports: 
       - "8073:8083"
       - "8076:8086"
-  delegate_to: "{{ groups['swarm-manager'][0] }}"
+  when: inventory_hostname == groups['swarm-manager'][0]
 
 - name: create directory storage grafana
   file: 
     path: "{{ sto_path }}/grafana"
     state: directory
     mode: 0755 
-  delegate_to: "{{ groups['swarm-manager'][0] }}"
+  when: inventory_hostname == groups['swarm-manager'][0]
 
 
 - name: launch grafana persistent storage
@@ -41,7 +41,7 @@
      name: grafana-sto
      image: busybox:1.27
      volumes: "{{ sto_path }}/grafana" 
-  delegate_to: "{{ groups['swarm-manager'][0] }}"
+  when: inventory_hostname == groups['swarm-manager'][0]
      
 - name : launch grafana container
   docker_container: 
@@ -49,5 +49,5 @@
      image: grafana/grafana:4.4.1
      volumes_from: grafana-sto
      exposed_ports: 
-      - "2000:3000" 
-  delegate_to: node1
+      - "{{ grafana_expose_addr }}:2000:3000" 
+  when: inventory_hostname == groups['swarm-manager'][0]

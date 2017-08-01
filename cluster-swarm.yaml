@@ -8,7 +8,7 @@
 - hosts: localhost
   gather_facts: False
   roles:
-   - { role: build-container, sudo: yes, thunderstruckconfig_build: true, thunderstruck_build: false}
+   - { role: build-container, thunderstruckconfig_build: true, thunderstruck_build: false}
 
 - hosts: all
   roles: 

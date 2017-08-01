@@ -11,6 +11,9 @@ docker_swarm_network: 10.10.8.0/24
 # e.g. docker_swarm_interface: "eth1"
 docker_swarm_interface: "{{ ansible_default_ipv4['interface'] }}"
 docker_swarm_addr: "{{ hostvars[inventory_hostname]['ansible_' + docker_swarm_interface]['ipv4']['address'] }}"
+grafana_expose_interface: "{{ ansible_default_ipv4['interface'] }}"
+grafana_expose_addr: "{{ hostvars[inventory_hostname]['ansible_' + grafana_expose_interface]['ipv4']['address'] }}"
+
 docker_swarm_port: 2377
 
 # List of the users in the Docker group
