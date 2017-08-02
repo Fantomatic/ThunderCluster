@@ -1,11 +1,10 @@
-# ## Configure 'ip' variable to bind kubernetes services on a
-# ## different ip than the default iface
-node1 ansible_ssh_pass=sogeti ansible_user=root
-node2 ansible_ssh_pass=sogeti ansible_user=root
-node3 ansible_ssh_pass=sogeti ansible_user=root
-# node4 ansible_ssh_host=95.54.0.15  # ip=10.3.0.4
-# node5 ansible_ssh_host=95.54.0.16  # ip=10.3.0.5
-# node6 ansible_ssh_host=95.54.0.17  # ip=10.3.0.6
+# Configure pub_if and priv_if to configure public and private interface of the nodes.
+node1 ansible_ssh_pass=sogeti ansible_user=root pub_if=eno16777736 priv_if=eno16777736
+node2 ansible_ssh_pass=sogeti ansible_user=root pub_if=eno16777736 priv_if=eno16777736
+node3 ansible_ssh_pass=sogeti ansible_user=root pub_if=ens33 priv_if=ens33
+# node4 ansible_ssh_host=192.168.1.4  ansible_ssh_pass=sogeti ansible_user=root pub_if=ens33 priv_if=ens33
+# node5 ansible_ssh_host=192.168.1.5  ansible_ssh_pass=sogeti ansible_user=root pub_if=ens33 priv_if=ens33
+# node6 ansible_ssh_host=192.168.1.6  ansible_ssh_pass=sogeti ansible_user=root pub_if=ens33 priv_if=ens33
 
 [swarm-nodes]
 node1
@@ -18,3 +17,5 @@ node2
 
 [swarm-worker]
 node3
+
+
