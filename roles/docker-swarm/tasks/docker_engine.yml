@@ -1,4 +1,10 @@
 ---
+- name: Create docker data repository
+  file:
+    path: "{{ sto_path }}/docker"
+    state: directory
+    mode: 0755
+   
 - name: Install yum-utils if necessary.
   yum:
     name: yum-utils
@@ -24,8 +30,18 @@
     name: docker-engine
     state: present
 
+- name: Add custom docker service file
+  template:
+    src: docker.service.j2
+    dest: /usr/lib/systemd/system/docker.service
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Enable the Docker daemon as a service and start it.
   service:
     name: docker
-    state: started
+    state: restarted
     enabled: yes
+
+
