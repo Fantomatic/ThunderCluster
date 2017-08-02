@@ -23,7 +23,7 @@
   docker_container:
     name: influxdb
     image: influxdb:1.3
-    exposed_ports: 
+    published_ports: 
       - "8073:8083"
       - "8076:8086"
   when: inventory_hostname == groups['swarm-manager'][0]
@@ -48,6 +48,6 @@
      name: grafana
      image: grafana/grafana:4.4.1
      volumes_from: grafana-sto
-     exposed_ports: 
+     published_ports: 
       - "{{ grafana_expose_addr }}:2000:3000" 
   when: inventory_hostname == groups['swarm-manager'][0]

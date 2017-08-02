@@ -1,7 +1,7 @@
 ---
 - name: Create docker data repository
   file:
-    path: "{{ sto_path }}/docker"
+    path: "{{ sto_path }}/docker/{{ inventory_hostname }}"
     state: directory
     mode: 0755
    
