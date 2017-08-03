@@ -1,7 +1,6 @@
 ---
 - stat: path="{{ container_conf }}/thunderstruck-config.tar.gz"
   register: thunderstruckconfig
-  when: inventory_hostname == 'node1'
 
 - name: deploy thunderstruck-config images
   copy: 
@@ -16,7 +15,6 @@
   docker_image:
     name: thunderstruck-config
     tag: 1.0
-    push: yes
     load_path: "{{ container_conf }}/thunderstruck-conf.tar.gz"
 
 - name: Delete tar.gz thunderstruck-config
@@ -24,4 +22,3 @@
     state: absent
     path: "{{ container_conf }}/thunderstruck-conf.tar.gz"
   when: inventory_hostname == 'node1'
-

@@ -1,4 +1,4 @@
-FROM base_container:1.0
+FROM sogeti/base_container:1.0
 MAINTAINER G.CUPILLARD (Sogeti France)
 
 COPY idbWriteScript/writeToInfluxdb.py /root/venv/
