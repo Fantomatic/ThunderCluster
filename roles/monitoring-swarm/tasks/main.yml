@@ -12,7 +12,14 @@
      volumes: 
        - "{{ container_conf }}/telegraf.conf:/etc/telegraf/telegraf.conf:ro"     
   tags: telegraf
-   
+
+- name: target for influxdb database on sto
+  file:
+    path: "{{ sto_path }}/influxdb-monitoring/{{ inventory_hostname }}"
+    state: directory
+    mode: 0755
+  when: inventory_hostname == groups['swarm-manager'][0]
+
 - name: write fichier de configuration influxdb
   template:
     src: env.influxdb.j2
@@ -26,6 +33,8 @@
     published_ports: 
       - "8073:8083"
       - "8076:8086"
+    volumes: 
+      - "{{ sto_path }}/influxdb-monitoring/{{ inventory_hostname}}:/var/lib/influxdb"
   when: inventory_hostname == groups['swarm-manager'][0]
 
 - name: create directory storage grafana

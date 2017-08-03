@@ -1,4 +1,4 @@
 ---
 - name: launch thunderstruck-config image in swarm
-  command: docker service create --mode=global --network=container:influxdb sogeti/thunderstruck-config:1.0
+  command: docker service create --mode=global -p 2500:3000 sogeti/thunderstruck-config:1.0
 

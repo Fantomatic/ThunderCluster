@@ -12,11 +12,11 @@ import datetime
 import time
 
 # Set the Influxdb parameters
-Idb_username = "admin"
-Idb_password = "admin"
-Idb_database = "testDocker"
-Idb_host = "localhost"
-Idb_measurement_name = "dataTestMeasurement"
+idb_username = "admin"
+idb_password = "admin"
+idb_database = "testDocker"
+idb_host = "localhost"
+idb_measurement_name = "dataTestMeasurement"
 
 # Set the data to send
 data_to_send = ['data1','data2','data3','data4']
@@ -28,11 +28,11 @@ debug = True
 # get_db
 #    @return:
 #        return InfluxDBClient object db
-# create a InfluxDBClient object to connect as username to Idb_database database
+# create a InfluxDBClient object to connect as username to idb_database database
 # of influxdb.
 #===============================================================================
 def get_db():
-    db = influxdb.InfluxDBClient(host=Idb_host, username=Idb_username, password=Idb_password, database=Idb_database)
+    db = influxdb.InfluxDBClient(host=idb_host, username=idb_username, password=idb_password, database=idb_database)
     return db
 
 #===============================================================================
@@ -54,7 +54,7 @@ def format_influxMetric_data(input_data):
     	curr_time = datetime.datetime.now()
 
         curr_metric = {
-            "measurement": Idb_measurement_name,
+            "measurement": idb_measurement_name,
             "time": curr_time,
             "fields":  {
                 "Value": input_data[data]
@@ -63,31 +63,31 @@ def format_influxMetric_data(input_data):
         influx_data.append(curr_metric)
 
     if debug:
-        print ("Writing %s data..."%(Idb_measurement_name))
+        print ("Writing %s data..."%(idb_measurement_name))
 
     return influx_data
 
 
-#===============================================================================
-# write_db
-#    @args :
-#        serie of elements to write in the Influxdb database
-#    @return:
-#
-#===============================================================================
-def write_db(serie):
-    db=get_db()
-    #print db
-    db.write_points(serie)
-    #check(db)
-    return 0
-
 if __name__ == '__main__':
+    # Get the database
+    db=get_db()
 
-    # Format the data to send
-    data_to_send = format_influxMetric_data(data_to_send)
-
-    # Write it in Influxdb
+    # Write data to Influxdb
     while(1):
-        write_db(data_to_send)
+	# Format the data to send
+    	formated_data = format_influxMetric_data(data_to_send)
+	try:
+            db.write_points(formated_data)
+            print "Write succeeded"
+    	except Exception as e:
+            print "Write failed: ", e, type(e)
+        time.sleep(5)
+
+
+
+
+
+
+
+
 
