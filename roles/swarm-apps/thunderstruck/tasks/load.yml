@@ -23,7 +23,7 @@
 - name: chargement image container1 en local repository
   docker_image:
     name: container1
-    tag: v1
+    tag: 1.0
     push: yes
     load_path: "{{ container_conf }}/container1.tar.gz" 
   when: container1.stat.exists == False
@@ -41,7 +41,7 @@
 - name: chargement image container2 en local repository
   docker_image:
     name: container2
-    tag: v1
+    tag: 1.0
     push: yes
     load_path: "{{ container_conf }}/container2.tar.gz"
   when: container2.stat.exists == False
@@ -59,7 +59,7 @@
 - name: chargement image container3 en local repository
   docker_image:
     name: container3
-    tag: v1
+    tag: 1.0
     push: yes
     load_path: "{{ container_conf }}/container3.tar.gz"
   when: container3.stat.exists == False
