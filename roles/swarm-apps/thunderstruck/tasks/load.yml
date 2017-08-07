@@ -2,22 +2,13 @@
 - stat: path="{{ container_conf }}/container1.tar.gz"
   register: container1
 
-- stat: path="{{ container_conf }}/container2.tar.gz"
-  register: container2
-
-- stat: path="{{ container_conf }}/container3.tar.gz"
-  register: container3
-
-
-
-
 - name: deploy container1 images
   copy:
     src: ../../../build-container/files/container1.tar.gz
     dest: "{{ container_conf }}/container1.tar.gz"
   when:
-    - inventory_hostname == groups['swarm-manager'][0]
     - container1.stat.exists == False
+    - inventory_hostname == 'node1'
   tags: thunderstruck
 
 - name: chargement image container1 en local repository
@@ -28,14 +19,23 @@
     load_path: "{{ container_conf }}/container1.tar.gz" 
   when: container1.stat.exists == False
 
+- name: Delete tar.gz thunderstruck container1
+  file:
+    state: absent
+    path: "{{ container_conf }}/container1.tar.gz"
+  when: inventory_hostname == 'node1'
+  tags: thunderstruck
+
+- stat: path="{{ container_conf }}/container2.tar.gz"
+  register: container2
 
 - name: deploy container2 images
   copy: 
      src: ../../../build-container/files/container2.tar.gz
      dest: "{{ container_conf }}/container2.tar.gz"
   when: 
-    - inventory_hostname == groups['swarm-manager'][0]
     - container2.stat.exists == False
+    - inventory_hostname == 'node1'
   tags: thunderstruck
 
 - name: chargement image container2 en local repository
@@ -45,15 +45,26 @@
     push: yes
     load_path: "{{ container_conf }}/container2.tar.gz"
   when: container2.stat.exists == False
+  tags: thunderstruck
 
+- name: Delete tar.gz thunderstruck container2
+  file:
+    state: absent
+    path: "{{ container_conf }}/container2.tar.gz"
+  when: inventory_hostname == 'node1'
+  tags: thunderstruck
+
+- stat: path="{{ container_conf }}/container3.tar.gz"
+  register: container3
+  tags: thunderstruck
 
 - name: deploy container3 images
   copy:
      src: ../../../build-container/files/container3.tar.gz
      dest: "{{ container_conf }}/container3.tar.gz"
   when: 
-    - inventory_hostname == groups['swarm-manager'][0]
     - container3.stat.exists == False
+    - inventory_hostname == 'node1'
   tags: thunderstruck
 
 - name: chargement image container3 en local repository
@@ -63,3 +74,12 @@
     push: yes
     load_path: "{{ container_conf }}/container3.tar.gz"
   when: container3.stat.exists == False
+  tags: thunderstruck
+
+- name: Delete tar.gz thunderstruck container3
+  file:
+    state: absent
+    path: "{{ container_conf }}/container3.tar.gz"
+  when: inventory_hostname == 'node1'
+  tags: thunderstruck
+

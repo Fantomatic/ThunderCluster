@@ -13,5 +13,5 @@
 - hosts: all
   roles: 
    - { role: monitoring-swarm, tags: monitoring }
-   - { role: swarm-apps/thunderstruck-config, tags: thunderstruck }
+   - { role: swarm-apps/thunderstruck-config, tags: thunderstruck-config }
    - { role: swarm-apps/thunderstruck, tags: thunderstruck }
