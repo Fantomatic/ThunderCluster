@@ -9,7 +9,6 @@
      dest: "{{ container_conf }}/thunderstruck-conf.tar.gz"
   when: 
     - thunderstruckconfig.stat.exists == False
-    - inventory_hostname == 'node1'
   tags: thunderstruck-config
 
 - name: chargement image thunderstruck-config en local repository
@@ -24,5 +23,4 @@
   file: 
     state: absent
     path: "{{ container_conf }}/thunderstruck-conf.tar.gz"
-  when: inventory_hostname == 'node1'
   tags: thunderstruck-config

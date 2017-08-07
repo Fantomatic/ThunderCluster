@@ -8,7 +8,6 @@
     dest: "{{ container_conf }}/container1.tar.gz"
   when:
     - container1.stat.exists == False
-    - inventory_hostname == 'node1'
   tags: thunderstruck
 
 - name: chargement image container1 en local repository
@@ -23,7 +22,6 @@
   file:
     state: absent
     path: "{{ container_conf }}/container1.tar.gz"
-  when: inventory_hostname == 'node1'
   tags: thunderstruck
 
 - stat: path="{{ container_conf }}/container2.tar.gz"
@@ -35,7 +33,6 @@
      dest: "{{ container_conf }}/container2.tar.gz"
   when: 
     - container2.stat.exists == False
-    - inventory_hostname == 'node1'
   tags: thunderstruck
 
 - name: chargement image container2 en local repository
@@ -64,7 +61,6 @@
      dest: "{{ container_conf }}/container3.tar.gz"
   when: 
     - container3.stat.exists == False
-    - inventory_hostname == 'node1'
   tags: thunderstruck
 
 - name: chargement image container3 en local repository
@@ -80,6 +76,5 @@
   file:
     state: absent
     path: "{{ container_conf }}/container3.tar.gz"
-  when: inventory_hostname == 'node1'
   tags: thunderstruck
 
