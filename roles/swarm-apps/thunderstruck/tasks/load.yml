@@ -12,7 +12,7 @@
 
 - name: chargement image container1 en local repository
   docker_image:
-    name: container1
+    name: sogeti/container1
     tag: 1.0
     push: yes
     load_path: "{{ container_conf }}/container1.tar.gz" 
@@ -37,7 +37,7 @@
 
 - name: chargement image container2 en local repository
   docker_image:
-    name: container2
+    name: sogeti/container2
     tag: 1.0
     push: yes
     load_path: "{{ container_conf }}/container2.tar.gz"
@@ -65,7 +65,7 @@
 
 - name: chargement image container3 en local repository
   docker_image:
-    name: container3
+    name: sogeti/container3
     tag: 1.0
     push: yes
     load_path: "{{ container_conf }}/container3.tar.gz"
