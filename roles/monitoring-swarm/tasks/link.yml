@@ -7,11 +7,13 @@
     url: http://{{ inventory_hostname }}:2000/api/datasources/name/InfluxMonitoring
     user: "admin"
     password: "{{ grafana_default_pass }}"
-    password: admin
     force_basic_auth: yes
   register: grafana_influxdb
   failed_when: false
   changed_when: false
+
+- debug:
+    msg: "{{ grafana_influxdb }}"
 
 - name: Enable Prometheus Datasource
   uri:
@@ -22,9 +24,12 @@
     body:
       name: "InfluxMonitoring"
       type: "influxdb"
-      url: "http://{{ inventory_hostname }}:8076"
-      access: "proxy"
+      url: "http://{{ docker_swarm_addr }}:8076"
+      access: "direct"
       isDefault: true
+      database: telegraf
+      user: 'admin'
+      passeword: 'admin'
     force_basic_auth: yes
     status_code: 201
     body_format: json

@@ -31,8 +31,8 @@
     name: influxdb
     image: influxdb:1.3
     published_ports: 
-      - "8073:8083"
-      - "8076:8086"
+      - "{{ docker_swarm_addr }}:8073:8083"
+      - "{{ docker_swarm_addr }}:8076:8086"
     volumes: 
       - "{{ sto_path }}/influxdb-monitoring/{{ inventory_hostname}}:/var/lib/influxdb"
   when: inventory_hostname == groups['swarm-manager'][0]
@@ -60,7 +60,7 @@
      published_ports: 
       - "{{ grafana_expose_addr }}:2000:3000" 
      env: 
-      - GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_default_pass }}"
+        GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_default_pass }}"
   when: inventory_hostname == groups['swarm-manager'][0]
 
 - include: link.yml
