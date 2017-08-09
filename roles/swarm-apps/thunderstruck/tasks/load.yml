@@ -11,12 +11,11 @@
   tags: thunderstruck
 
 - name: chargement image container1 en local repository
-  docker_image:
-    name: sogeti/container1
-    tag: 1.0
-    push: yes
-    load_path: "{{ container_conf }}/container1.tar.gz" 
-  when: container1.stat.exists == False
+  command: "docker load -i {{ container_conf }}/container1.tar.gz"  
+  sudo: yes
+  when: 
+    - container1.stat.exists == False
+    - inventory_hostname != 'node1'  
 
 - name: Delete tar.gz thunderstruck container1
   file:
@@ -36,12 +35,11 @@
   tags: thunderstruck
 
 - name: chargement image container2 en local repository
-  docker_image:
-    name: sogeti/container2
-    tag: 1.0
-    push: yes
-    load_path: "{{ container_conf }}/container2.tar.gz"
-  when: container2.stat.exists == False
+  command: "docker load -i {{ container_conf }}/container2.tar.gz"
+  sudo: yes
+  when: 
+    - container2.stat.exists == False
+    - inventory_hostname != 'node1' 
   tags: thunderstruck
 
 - name: Delete tar.gz thunderstruck container2
@@ -64,12 +62,11 @@
   tags: thunderstruck
 
 - name: chargement image container3 en local repository
-  docker_image:
-    name: sogeti/container3
-    tag: 1.0
-    push: yes
-    load_path: "{{ container_conf }}/container3.tar.gz"
-  when: container3.stat.exists == False
+  command: "docker load -i {{ container_conf }}/container3.tar.gz"
+  sudo: yes
+  when: 
+    - container3.stat.exists == False
+    - inventory_hostname != 'node1' 
   tags: thunderstruck
 
 - name: Delete tar.gz thunderstruck container3

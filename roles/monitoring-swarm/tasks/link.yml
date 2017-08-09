@@ -1,0 +1,31 @@
+---
+# Check that a page returns a status 200 and fail if the word AWESOME is not
+# in the page contents.
+
+#InfluxdbMonitoring 
+- uri:
+    url: http://{{ inventory_hostname }}:2000/api/datasources/name/InfluxMonitoring
+    user: "admin"
+    password: "{{ grafana_default_pass }}"
+    password: admin
+    force_basic_auth: yes
+  register: grafana_influxdb
+  failed_when: false
+  changed_when: false
+
+- name: Enable Prometheus Datasource
+  uri:
+    url: http://{{ inventory_hostname }}:2000/api/datasources
+    method: POST
+    user: "admin"
+    password: "{{ grafana_default_pass }}"
+    body:
+      name: "InfluxMonitoring"
+      type: "influxdb"
+      url: "http://{{ inventory_hostname }}:8076"
+      access: "proxy"
+      isDefault: true
+    force_basic_auth: yes
+    status_code: 201
+    body_format: json
+  when: grafana_influxdb.status == 404

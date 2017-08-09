@@ -37,4 +37,3 @@
      volumes-from: grafana-sto
      exposed_ports:
        - 2000:3000 
-  
