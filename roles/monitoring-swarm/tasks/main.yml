@@ -23,7 +23,7 @@
 
 - name: write fichier de configuration influxdb
   template:
-    src: influxdb.conf;j2
+    src: influxdb.conf.j2
     dest: "{{ container_conf }}/influxdb.conf"
   tags: influxdb
 
