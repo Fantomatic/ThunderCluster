@@ -4,7 +4,7 @@
 
 #InfluxdbMonitoring 
 - uri:
-    url: http://{{ inventory_hostname }}:2000/api/datasources/name/InfluxMonitoring
+    url: http://{{ grafana_expose_addr }}:3000/api/datasources/name/{{ inventory_hostname }}
     user: "admin"
     password: "{{ grafana_default_pass }}"
     force_basic_auth: yes
@@ -15,16 +15,16 @@
 - debug:
     msg: "{{ grafana_influxdb }}"
 
-- name: Enable Prometheus Datasource
+- name: Enable datasources
   uri:
-    url: http://{{ inventory_hostname }}:2000/api/datasources
+    url: http://{{ grafana_expose_addr }}:3000/api/datasources
     method: POST
     user: "admin"
     password: "{{ grafana_default_pass }}"
     body:
-      name: "InfluxMonitoring"
+      name: "{{ inventory_hostname }}"
       type: "influxdb"
-      url: "http://{{ docker_swarm_addr }}:8076"
+      url: "http://{{ docker_swarm_addr }}:8086"
       access: "direct"
       isDefault: true
       database: telegraf

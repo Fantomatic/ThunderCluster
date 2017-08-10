@@ -7,16 +7,16 @@
   when: inventory_hostname == 'node1'
 
 - name: launch infludb 
-  command: "docker service create -p 8076:8086 -p 8073:8083 --mount type=volume,source={{ sto_path}}/influxdb-thunderstruck/{{ inventory_hostname }},destination=/var/lib/influxdb --constraint 'node=={{ inventory_hostname }}' influxdb:1.3"
+  command: "docker service create -p 8086:8086 -p 8083:8083 --mount type=volume,source={{ sto_path}}/influxdb-thunderstruck/{{ inventory_hostname }},destination=/var/lib/influxdb --constraint 'node=={{ inventory_hostname }}' influxdb:1.3"
 
 - name: launch container1 images in swarm 
-  command: docker service create --mode=global --network=container:influxdb sogeti/container1:1.0
+  command: docker service create --mode=global sogeti/container1:1.0
 
 - name: launch container2 images in swarm
-  command: docker service create --mode=global --network=container:influxdb sogeti/container2:1.0
+  command: docker service create --mode=global sogeti/container2:1.0
 
 - name: launch container3 image in swarm 
-  command: docker service create --mode=global --network=container:influxdb sogeti/container3:1.0
+  command: docker service create --mode=global sogeti/container3:1.0
 
 - name: create directory for persistent storage grafana
   file: 
@@ -36,4 +36,4 @@
      image: grafana/grafana:4.4.1
      volumes-from: grafana-sto
      exposed_ports:
-       - 2000:3000 
+       - 3000:3000 

@@ -15,7 +15,7 @@
 - debug:
     msg: "{{ grafana_influxdb }}"
 
-- name: Enable Prometheus Datasource
+- name: Enable InfluxMonitoring Datasource
   uri:
     url: http://{{ inventory_hostname }}:2000/api/datasources
     method: POST
