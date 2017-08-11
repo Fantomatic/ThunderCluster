@@ -2,4 +2,5 @@
 - name: launch thunderstruck-config image in swarm
   command: docker service create --mode=global -p 2500:3000 sogeti/thunderstruck-config:1.0
   when: inventory_hostname == 'node1'
+  ignore_errors: yes
 

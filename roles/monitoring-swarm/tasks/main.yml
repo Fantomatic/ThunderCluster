@@ -42,7 +42,7 @@
 
 - name: create directory storage grafana
   file: 
-    path: "{{ sto_path }}/grafana"
+    path: "{{ sto_path }}/grafana-monitoring"
     state: directory
     mode: 0755 
   when: inventory_hostname == groups['swarm-manager'][0]
@@ -50,16 +50,16 @@
 
 - name: launch grafana persistent storage
   docker_container: 
-     name: grafana-sto
+     name: grafana-sto-monitoring
      image: busybox:1.27
-     volumes: "{{ sto_path }}/grafana:/var/lib/grafana" 
+     volumes: "{{ sto_path }}/grafana-monitoring:/var/lib/grafana" 
   when: inventory_hostname == groups['swarm-manager'][0]
      
 - name : launch grafana container
   docker_container: 
      name: grafana
      image: grafana/grafana:4.4.1
-     volumes_from: grafana-sto
+     volumes_from: grafana-sto-monitoring
      published_ports: 
       - "{{ grafana_expose_addr }}:2000:3000" 
      env: 
