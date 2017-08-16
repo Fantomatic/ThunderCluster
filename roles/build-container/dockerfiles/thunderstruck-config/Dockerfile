@@ -3,6 +3,7 @@ MAINTAINER G.Cupillard (Sogeti France)
 
 RUN yum update -y
 RUN yum install -y epel-release
+RUN rpm -ivh https://kojipkgs.fedoraproject.org//packages/http-parser/2.7.1/3.el7/x86_64/http-parser-2.7.1-3.el7.x86_64.rpm 
 RUN yum install -y nodejs httpd
 RUN  npm install -g bower
 COPY ihm /var/www/ihm/
