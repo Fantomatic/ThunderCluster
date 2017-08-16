@@ -93,7 +93,7 @@
   # urls = ["udp://localhost:8089"] # UDP endpoint example
   urls = ["http://localhost:8086"] # required
   ## The target database for metrics (telegraf will create it if not exists).
-  database = "telegraf" # required
+  database = "{{ inventory_hostname }}-telegraf" # required
 
   ## Name of existing retention policy to write to.  Empty string writes to
   ## the default retention policy.

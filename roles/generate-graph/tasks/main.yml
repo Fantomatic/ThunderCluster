@@ -1,0 +1,4 @@
+---
+- name: Check that you can connect (GET) to a page and it returns a status 200
+  shell: "curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode 'db={{ inventory_hostname }}-telegraf' --data-urlencode 'q=show tag values from docker_container_cpu with key = container_name'"
+
