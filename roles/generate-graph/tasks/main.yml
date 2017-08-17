@@ -1,4 +1,30 @@
 ---
-- name: Check that you can connect (GET) to a page and it returns a status 200
-  shell: "curl -G 'http://localhost:8086/query?pretty=true' --data-urlencode 'db={{ inventory_hostname }}-telegraf' --data-urlencode 'q=show tag values from docker_container_cpu with key = container_name'"
-
+- name: Search all contaienrs name
+  shell: "curl -G 'http://{{ docker_swarm_addr }}:8086/query?pretty=true' --data-urlencode 'db=telegraf-{{ inventory_hostname }}' --data-urlencode 'q=show tag values from docker_container_cpu with key = container_name'" 
+  register: query_result 
+ 
+- set_fact: 
+    query_result_output: "{{ query_result.stdout|from_json}}" 
+ 
+- set_fact:  
+    container_names: [] 
+- set_fact:   
+    container_names: "{{ container_names }} + ['{{ item }}']"   
+  when: "'{{ item}}' !=  'container_name'" 
+  with_items: "{{ query_result_output['results'][0]['series'][0]['values'] }}" 
+ 
+- debug:  
+    msg: "{{container_names}}" 
+ 
+- name: Create template for each container in every host 
+  template:  
+    src: dashboard_container.json.j2 
+    dest: "{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ item }}.json" 
+    mode: 0644 
+  with_items: "{{container_names}}" 
+  vars: 
+    - container_name: "{{ item }}" 
+  
+- name: Push into Grafana
+  shell: "curl -X POST -i -u admin:admin -H 'Content-Type: application/json' -d @{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ item }}.json http://:3000/api/dashboards/db"
+  with_items: "{{ container_names }}"

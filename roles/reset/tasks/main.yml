@@ -1,5 +1,4 @@
 ---
-
 - name: reset | stop services
   service:
     name: "{{ item }}"
