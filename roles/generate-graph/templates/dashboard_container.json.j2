@@ -35,7 +35,7 @@
       "height": 25,
       "panels": [
         {
-          "content": "<font size=\"4\"><b><center>{{container_name}}</center></b></font>",
+          "content": "<font size=\"4\"><b><center>{{ container_name }}</center></b></font>",
           "id": 2,
           "links": [],
           "mode": "html",
@@ -63,7 +63,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "telegraf-{{inventory_hostname}}",
+          "datasource": "telegraf-{{ inventory_hostname }}",
           "fill": 1,
           "id": 3,
           "legend": {
@@ -111,7 +111,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{container_name}}"
+                  "value": "{{ container_name }}"
                 }
 				]
             }
@@ -159,7 +159,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "telegraf-{{inventory_hostname}}",
+          "datasource": "telegraf-{{ inventory_hostname }}",
           "fill": 1,
           "id": 4,
           "legend": {
@@ -207,7 +207,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{container_name}}"
+                  "value": "{{ container_name }}"
                 }
 				]
             }
@@ -267,7 +267,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "telegraf-{{inventory_hostname}}",
+          "datasource": "telegraf-{{ inventory_hostname }}",
           "fill": 1,
           "id": 5,
           "legend": {
@@ -315,7 +315,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{container_name}}"
+                  "value": "{{ container_name }}"
                 }
 				]
             }
@@ -363,7 +363,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "telegraf-{{inventory_hostname}}",
+          "datasource": "telegraf-{{ inventory_hostname }}",
           "fill": 1,
           "id": 6,
           "legend": {
@@ -411,7 +411,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{container_name}}"
+                  "value": "{{ container_name }}"
                 }
 				]
             }
@@ -464,7 +464,7 @@
         "tags": [
             "node_monitoring"
         ], 
-        "title": "{{container_name}}", 
+        "title": "{{ container_name }}", 
         "version": 0, 
     "time": {
     "from": "now-6h",
