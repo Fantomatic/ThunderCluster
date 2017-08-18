@@ -69,7 +69,7 @@
 {% for  container_name in container_names %}
         {
           "clusterName": "{{ container_name }}",
-          "datasource": "telegraf-{{ inventory_hostname }}",
+          "datasource": "telegraf_{{ inventory_hostname }}",
           "displayName": "{{ container_name }}",
           "flipTime": 5,
           "id": {{ count_id }} ,
