@@ -1,3 +1,4 @@
 netaddr
 jinja2>=2.9.6
 docker-py
+boto
