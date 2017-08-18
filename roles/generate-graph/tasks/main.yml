@@ -26,7 +26,7 @@
     - container_name: "{{ item }}" 
   
 - name: Push containers dashboard into Grafana
-  shell: "curl -X POST -i -u admin:admin -H 'Content-Type: application/json' -d @{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ item }}.json http://:3000/api/dashboards/db"
+  shell: "curl -X POST -i -u admin:admin -H 'Content-Type: application/json' -d @{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ item }}.json http://{{ docker_grafana_addr }}:3000/api/dashboards/db"
   with_items: "{{ container_names }}"
 
 - name : Create template for each node
@@ -36,4 +36,6 @@
     mode: 0644
 
 - name: Push nodes dashboard into Grafana
-  shell: "curl -X POST -i -u admin:admin -H 'Content-Type: application/json' -d @{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}.json http://:3000/api/dashboards/db"
+  shell: "curl -X POST -i -u admin:admin -H 'Content-Type: application/json' -d @{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}.json http://{{ docker_grafana_addr }}:3000/api/dashboards/db"
+
+- name: Create template for general host

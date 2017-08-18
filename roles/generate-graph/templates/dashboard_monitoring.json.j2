@@ -1,13 +1,6 @@
 {
-  "annotations": {
-    "list": []
-  },
-  "editable": true,
-  "gnetId": null,
-  "graphTooltip": 0,
-  "hideControls": false,
-  "id": null,
-  "links": [],
+    "dashboard": {
+	  "refresh": "10s",
   "rows": [
     {
       "collapse": false,
@@ -15,7 +8,7 @@
       "panels": [
         {
           "headings": false,
-          "id": 3,
+          "id": 10000,
           "limit": 10,
           "links": [],
           "query": "",
@@ -43,7 +36,7 @@
       "panels": [
         {
           "content": "<font size=\"4\"><b><center>{{ inventory_hostname }}</center></b></font>",
-          "id": 4,
+          "id": 20000,
           "links": [],
           "mode": "html",
           "span": 12,
@@ -113,17 +106,28 @@
           ],
           "title": "",
           "type": "vonage-status-panel"
-        },
+        }
+  {% if count_id  <  container_names|length  %}
+,
+  {% endif %}
   {% set count_id = count_id +1 %}
 {% endfor %}
 
+],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
 {
       "collapse": false,
       "height": 250,
       "panels": [
         {
           "headings": false,
-          "id": 5,
+          "id": 30000,
           "limit": 20,
           "links": [],
           "query": "",
@@ -132,7 +136,7 @@
           "span": 12,
           "starred": false,
           "tags": [
-            "{{ inventory_hostname }}_container"
+            "{{ inventory_hostname }}_container_monitoring"
           ],
           "title": "Links",
           "type": "dashlist"
@@ -146,42 +150,20 @@
       "titleSize": "h6"
     }
   ],
-  "schemaVersion": 14,
-  "style": "dark",
-  "tags": [],
-  "templating": {
-    "list": []
-  },
-  "time": {
-    "from": "now-12h",
+        "tags": [
+            "node_monitoring",
+			"{{ inventory_hostname }}_monitoring"
+        ], 
+        "title": "{{ inventory_hostname }}", 
+        "version": 0, 
+    "time": {
+    "from": "now-6h",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
-  },
-  "timezone": "",
-  "title": "{{ inventory_hostname }} monitoring",
-  "version": 0
+        "timezone": "browser", 
+        "schemaVersion": 6, 
+        "id": null
+    },
+    "overwrite": true
 }
+

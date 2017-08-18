@@ -17,7 +17,7 @@
           "span": 12,
           "starred": false,
           "tags": [
-            "general_monitoring"
+            "{{ inventory_hostname }}_monitoring"
           ],
           "title": "Return",
           "type": "dashlist"
@@ -462,7 +462,7 @@
     }
   ],
         "tags": [
-            "node_monitoring"
+            "{{ inventory_hostname }}_container_monitoring"
         ], 
         "title": "{{ container_name }}", 
         "version": 0, 
@@ -476,3 +476,4 @@
     },
     "overwrite": true
 }
+
