@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  gather_facts: False
+  roles:
+   - { role: createInstance }
+
+- include: cluster-swarm.yml
+
+ 
