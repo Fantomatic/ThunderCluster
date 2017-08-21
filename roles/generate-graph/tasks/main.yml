@@ -39,3 +39,10 @@
   shell: "curl -X POST -i -u admin:admin -H 'Content-Type: application/json' -d @{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}.json http://{{ docker_grafana_addr }}:3000/api/dashboards/db"
 
 - name: Create template for general host
+  template: 
+    src: dashboard_general.json.j2
+    dest: "{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}.json"
+    mode: 0644
+
+- name: Push general dashobard into Grafana
+  shell: "curl -X POST -i -u admin:admin -H 'Content-Type: application/json' -d @{{ sto_dir }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}.json http://{{ docker_grafana_addr }}:3000/api/dashboards/db"
