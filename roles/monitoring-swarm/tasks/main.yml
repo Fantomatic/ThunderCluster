@@ -19,7 +19,7 @@
     path: "{{ sto_path }}/influxdb-monitoring/{{ inventory_hostname }}"
     state: directory
     mode: 0755
-  when: inventory_hostname == node1
+  when: inventory_hostname == 'node1'
 
 - name: write fichier de configuration influxdb
   template:
@@ -38,23 +38,22 @@
     volumes: 
       - "{{ sto_path }}/influxdb-monitoring/{{ inventory_hostname}}:/var/lib/influxdb"
       - "{{ container_conf }}/influxdb.conf:/etc/influxdb/influxdb.conf:ro"
-  when: inventory_hostname == node1
+  when: inventory_hostname == 'node1'
 
 - name: create directory storage grafana
   file: 
     path: "{{ sto_path }}/grafana-monitoring"
     state: directory
     mode: 0755 
-  when: inventory_hostname == node1
-
+  delegate_to: node1
 
 - name: launch grafana persistent storage
   docker_container: 
      name: grafana-sto-monitoring
      image: busybox:1.27
      volumes: "{{ sto_path }}/grafana-monitoring:/var/lib/grafana" 
-  when: inventory_hostname == node1
-     
+  when: inventory_hostname == 'node1'
+ 
 - name : launch grafana container
   docker_container: 
      name: grafana
@@ -64,6 +63,6 @@
       - "{{ grafana_expose_addr }}:2000:3000" 
      env: 
         GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_default_pass }}"
-  when: inventory_hostname == node1
+  when: inventory_hostname == 'node1'
 
 - include: link.yml
