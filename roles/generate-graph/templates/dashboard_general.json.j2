@@ -1,0 +1,205 @@
+{
+    "dashboard": {
+          "refresh": "10s",
+        "rows": [
+    {
+      "collapse": false,
+      "height": -7,
+      "panels": [
+        {
+          "content": "<font size=\"4\"><b><center>General  Monitoring</center></b></font>",
+          "id": 1,
+          "links": [],
+          "mode": "html",
+          "span": 12,
+          "title": "",
+          "type": "text"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 194,
+      "panels": [
+{% set count_id = 1 %}
+{% for  host in groups['swarm-nodes'] %}
+        {
+          "clusterName": "{{ host }}",
+          "datasource": "telegraf_{{ host }}",
+          "displayName": "{{ host }}",
+          "flipTime": 5,
+          "id": {{ count_id }},
+          "isGrayOnNoData": true,
+          "links": [],
+          "span": 2,
+          "targets": [
+            {
+              "aggregation": "Avg",
+              "alias": "cpu",
+              "crit": "80",
+              "display": false,
+              "displayType": "Regular",
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "cpu",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "usage_system"
+                    ],
+                    "type": "field"
+                  }
+                ],
+                [
+                  {
+                    "params": [
+                      "usage_user"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "cpu",
+                  "operator": "=",
+                  "value": "cpu-total"
+                }
+              ],
+              "valueHandler": "Threshold",
+              "warn": "60"
+            },
+            {
+              "aggregation": "Avg",
+              "alias": "cpu_system",
+              "displayType": "Regular",
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "cpu",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "usage_system"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "cpu",
+                  "operator": "=",
+                  "value": "cpu-total"
+                }
+              ],
+              "valueHandler": "Text Only"
+            },
+            {
+              "aggregation": "Avg",
+              "alias": "cpu_user",
+              "displayType": "Regular",
+              "dsType": "influxdb",
+              "groupBy": [],
+              "measurement": "cpu",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "usage_user"
+                    ],
+                    "type": "field"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "cpu",
+                  "operator": "=",
+                  "value": "cpu-total"
+                }
+              ],
+              "valueHandler": "Text Only"
+            }
+          ],
+          "title": "",
+          "type": "vonage-status-panel"
+        }
+{% if count_id  <  groups['swarm-nodes']|length  %}
+,
+  {% endif %}
+  {% set count_id = count_id +1 %}
+{% endfor %}
+],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+{
+      "collapse": false,
+      "height": 250,
+      "panels": [
+        {
+          "headings": false,
+          "id": 30000,
+          "limit": 20,
+          "links": [],
+          "query": "",
+          "recent": false,
+          "search": true,
+          "span": 12,
+          "starred": false,
+          "tags": [
+            "node_monitoring"
+          ],
+          "title": "Links",
+          "type": "dashlist"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    }   
+  ],  
+        "tags": [
+            "general_monitoring"
+        ],
+        "title": "General monitoring",
+        "version": 0,
+    "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+        "timezone": "browser",
+        "schemaVersion": 6,
+        "id": null
+    },
+    "overwrite": true
+}
+
+

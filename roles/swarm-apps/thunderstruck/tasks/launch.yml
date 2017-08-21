@@ -11,27 +11,27 @@
 
 - name: launch container1 images in swarm 
   command: docker service create --mode=global sogeti/container1:1.0
-  delegate_to: node1
+  when: inventory_hostname == 'node1'
 
 - name: launch container2 images in swarm
   command: docker service create --mode=global sogeti/container2:1.0
-  delegate_to: node1
+  when: inventory_hostname == 'node1'
 
 - name: launch container3 image in swarm 
   command: docker service create --mode=global sogeti/container3:1.0
-  delegate_to: node1
+  when: inventory_hostname == 'node1'
 
 - name: create directory for persistent storage grafana
   file: 
     path: "{{ sto_path }}/grafana"
     state: directory
     mode: 0755
-  delegate_to: node1
+  when: inventory_hostname == 'node1'
 
 - name: launch persistent storage grafana
   command: "docker service create --mount type=volume,source={{ sto_path }}/grafana,dest=/var/lib/grafana --name grafana-sto --constraint 'node==node1' busybox:1.27"
-  delegate_to: node1
+  when: inventory_hostname == 'node1'
 
 - name: launch grafana for thunderstruck
   command: "docker service create -p {{ exposed_grafana_addr }}:3000:3000 --mount type=volume,src=grafana-sto,dest=/var/lib/grafana --name grafana-thunderstruck --constraint 'node==node1' grafana/grafana:4.4.1"
-  delegate_to: node1 
+  when: inventory_hostname == 'node1'
