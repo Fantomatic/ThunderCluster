@@ -35,7 +35,7 @@
       "height": 25,
       "panels": [
         {
-          "content": "<font size=\"4\"><b><center>{{ container_name }}</center></b></font>",
+          "content": "<font size=\"4\"><b><center>{{ item }}</center></b></font>",
           "id": 2,
           "links": [],
           "mode": "html",
@@ -111,7 +111,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{ container_name }}"
+                  "value": "{{ item }}"
                 }
 				]
             }
@@ -207,7 +207,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{ container_name }}"
+                  "value": "{{ item }}"
                 }
 				]
             }
@@ -315,7 +315,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{ container_name }}"
+                  "value": "{{ item }}"
                 }
 				]
             }
@@ -411,7 +411,7 @@
 			                  {
                   "key": "container_name",
                   "operator": "=",
-                  "value": "{{ container_name }}"
+                  "value": "{{ item }}"
                 }
 				]
             }
@@ -464,7 +464,7 @@
         "tags": [
             "{{ inventory_hostname }}_container_monitoring"
         ], 
-        "title": "{{ container_name }}", 
+        "title": "{{ inventory_hostname }}_{{ item }}", 
         "version": 0, 
     "time": {
     "from": "now-6h",
