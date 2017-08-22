@@ -2,7 +2,7 @@
 - name: generation of dockerfile
   template:
     src: thunderstruck-config.j2
-    dest: "{{ role_path }}"/dockerfiles/thunderstruck-config/Dockerfile
+    dest: "{{ role_path }}/dockerfiles/thunderstruck-config/Dockerfile"
     mode: 0664
 
 - name: building container thunderstruck-config

@@ -53,12 +53,36 @@
      image: busybox:1.27
      volumes: "{{ sto_path }}/grafana-monitoring:/var/lib/grafana" 
   when: inventory_hostname == 'node1'
- 
+
+- name: create directory configuration grafana
+  file: 
+    path: "{{ sto_path }}/grafana-configuration"
+    state: directory
+    mode: 0755 
+  delegate_to: node1
+
+- name: generate configuration for grafana
+  template:
+    src: grafana.ini.j2
+    dest: "{{ sto_path }}/grafana-configuration/grafana.ini"
+    mode: 0664
+    owner: root
+    group: root
+
+- name: launch grafana persistent configuration
+  docker_container:
+     name: grafana-sto-configuration
+     image: busybox:1.27
+     volumes: "{{ sto_path }}/grafana-configuration:/etc/grafana"
+  when: inventory_hostname == 'node1'
+
 - name : launch grafana container
   docker_container: 
      name: grafana
      image: grafana/grafana:4.4.1
-     volumes_from: grafana-sto-monitoring
+     volumes_from: 
+       - grafana-sto-monitoring
+       - grafana-sto-configuration
      published_ports: 
        - "{{ grafana_expose_addr }}:2000:3000" 
      env: 
