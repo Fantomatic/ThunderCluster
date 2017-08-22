@@ -68,7 +68,11 @@
           "id": {{ count_id }} ,
           "isGrayOnNoData": true,
           "links": [],
-          "span": 1,
+          "span": 
+            {% if container_names|length < 12 %} {{ 12 / container_names|length }}
+            {% else %} 1
+            {% endif %}
+,
           "targets": [
             {
               "aggregation": "Avg",

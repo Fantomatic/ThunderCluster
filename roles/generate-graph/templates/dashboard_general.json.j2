@@ -37,7 +37,11 @@
           "id": {{ count_id }},
           "isGrayOnNoData": true,
           "links": [],
-          "span": 2,
+          "span": 
+            {% if groups['swarm-nodes']|length < 12 %} {{ 12 / groups['swarm-nodes']|length }}
+            {% else %} 1
+            {% endif %}
+,
           "targets": [
             {
               "aggregation": "Avg",

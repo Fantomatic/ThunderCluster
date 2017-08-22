@@ -14,5 +14,5 @@
   roles: 
    - { role: monitoring-swarm, tags: monitoring }
    - { role: swarm-apps/thunderstruck-config, tags: thunderstruck-config }
-   - { role: swarm-apps/thunderstruck, tags: thunderstruck }
+#   - { role: swarm-apps/thunderstruck, tags: thunderstruck }
    - { role: generate-graph, tags: graph-grafana }
