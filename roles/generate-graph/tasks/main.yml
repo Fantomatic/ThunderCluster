@@ -4,28 +4,33 @@
     state: directory
     mode: 0755
 
-- name: Search all containers name
-  shell: "curl -G 'http://{{ hostvars['node1']['ansible_' + docker_swarm_interface]['ipv4']['address'] }}:8076/query?pretty=true' --data-urlencode 'db=telegraf_{{ inventory_hostname }}' --data-urlencode 'q=show tag values from docker_container_cpu with key = container_name'" 
-  register: query_result 
- 
-- set_fact: 
-    query_result_output: "{{ query_result.stdout|from_json}}" 
+- name: Associate container_names <--> container_images
+  shell: "curl -G 'http://{{ hostvars['node1']['ansible_' + docker_swarm_interface]['ipv4']['address'] }}:8076/query?pretty=true' --data-urlencode 'db=telegraf_{{ inventory_hostname }}' --data-urlencode 'q= select container_image,container_id from docker_container_cpu group by container_name order by time desc limit 1'"
+  register: query_result
 
-- debug: 
-    msg: "{{ query_result_output }}" 
-- set_fact:  
-    container_names: [] 
-- set_fact:   
-    container_names: "{{ container_names }} + ['{{ item }}']"   
-  when: item !=  'container_name'
-  with_items: "{{ query_result_output['results'][0]['series'][0]['values'] }}" 
- 
+- set_fact:
+    query_result_containers: "{{ query_result.stdout|from_json}}"
+- set_fact:
+    container_facts: []
+
+- set_fact:
+    msg: "{{ item['tags']['container_name'] }}"
+  with_items: "{{ query_result_containers['results'][0]['series'] }}"
+
+- name:  print name and images
+  debug:
+    msg: "{{ item[0] }} and {{ item[1] }}"
+  with_items: "{{ container_facts }}"
+
+
 - name: Create template for each container in every host 
   template:  
     src: dashboard_container.json.j2 
-    dest: "{{ sto_path }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}_{{ item }}.json" 
+    dest: "{{ sto_path }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}_{{ item.1 }}.json" 
     mode: 0644 
-  with_items: "{{ container_names }}" 
+  with_together: 
+     - "{{ container_names }}" 
+     - "{{ container_images }}"
   
 - name: Push containers dashboard into Grafana
   shell: "curl -X POST -i -u admin:{{ grafana_default_pass }} -H 'Content-Type: application/json' -d @{{ sto_path }}/templates/{{ inventory_hostname }}/{{ inventory_hostname }}_{{ item }}.json http://{{ hostvars['node1']['ansible_' + grafana_expose_interface]['ipv4']['address'] }}:2000/api/dashboards/db"
