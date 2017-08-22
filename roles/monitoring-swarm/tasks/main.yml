@@ -88,6 +88,9 @@
      env: 
        GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_default_pass }}"
        GF_INSTALL_PLUGINS: "vonage-status-panel,jdbranham-diagram-panel"
+       http_proxy: "{{ proxy }}"
+       https_proxy: "{{ proxys }}"
+       no_proxy: "127.0.0.1, localhosl, {{ all_addr }}"
   when: inventory_hostname == 'node1'
 
 - include: link.yml
