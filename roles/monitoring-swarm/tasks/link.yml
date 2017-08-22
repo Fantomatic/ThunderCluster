@@ -28,7 +28,7 @@
       name: "telegraf_{{ item }}"
       type: "influxdb"
       url: "http://{{ hostvars['node1']['ansible_' + docker_swarm_interface]['ipv4']['address'] }}:8076"
-      access: "direct"
+      access: "proxy"
       isDefault: true
       database: telegraf_{{ item }}
       user: 'admin'
