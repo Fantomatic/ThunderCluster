@@ -1,6 +1,8 @@
 FROM centos:7
 MAINTAINER G.CUPILLARD (Sogeti France)
 
+ENV http_proxy {{ proxy }}
+ENV https_proxy {{ proxys }}
 RUN yum update -y 
 RUN yum install epel-release -y 
 RUN yum install python-pip gcc python-devel git cmake3 -y

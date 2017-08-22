@@ -1,3 +1,10 @@
+---
+- name: generation base_container dockerfile
+  template: 
+    src: base_container.j2
+    dest: "{{ role_path }}/dockerfiles/base_container/Dockerfile"
+    mode: 0664
+
 - name: building container base_container
   docker_image: 
     name: sogeti/base_container 

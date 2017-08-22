@@ -1,8 +1,5 @@
 .vagrant
 *.retry
-inventory/vagrant_ansible_inventory
-inventory/group_vars/fake_hosts.yml
-inventory/host_vars/
 temp
 .idea
 .tox
@@ -17,3 +14,5 @@ temp
 /ssh-bastion.conf
 **/*.sw[pon]
 vagrant/
+/roles/build_containers/dockerfiles/base_container/Dockerfile
+/roles/build_containers/dockerfiles/thunderstruck-config/Dockerfile
