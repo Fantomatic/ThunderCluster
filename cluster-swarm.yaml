@@ -8,11 +8,11 @@
 - hosts: localhost
   gather_facts: False
   roles:
-#   - { role: build-container, sudo: yes, thunderstruckconfig_build: true, thunderstruck_build: true} 
+   - { role: build-container, sudo: yes, thunderstruckconfig_build: true, thunderstruck_build: true} 
 
 - hosts: all
   roles: 
-   - { role: monitoring-swarm, tags: monitoring }
-#   - { role: swarm-apps/thunderstruck-config, tags: thunderstruck-config }
+   - { role: swarm-apps/thunderstruck-config, tags: thunderstruck-config }
 #   - { role: swarm-apps/thunderstruck, tags: thunderstruck }
+   - { role: monitoring-swarm, tags: monitoring }
    - { role: generate-graph, tags: graph-grafana }
